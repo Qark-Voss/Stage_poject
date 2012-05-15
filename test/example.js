@@ -41,7 +41,8 @@ function prepareCanvas() {
 		var mouseY = e.pageY - this.offsetTop;
 	
 		paint  = true;
-		addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+		addClick(mouseX, mouseY, false);
+		
 		redraw();
 	
 	});
@@ -55,9 +56,11 @@ function prepareCanvas() {
 		if(paint){
 			addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
 			redraw();
+						
 		}
 	
 	});
+
 
 
 	// The mouse is off the paper
@@ -65,7 +68,9 @@ function prepareCanvas() {
 	$('#canvas').mouseup(function(e){
 	
 		paint = false;
-	
+		
+		redraw();
+			
 	});
 
 
@@ -74,7 +79,7 @@ function prepareCanvas() {
 	$('#canvas').mouseleave(function(e){
 	
 		paint = false;
-	
+			
 	});
 }
 
@@ -93,22 +98,22 @@ function redraw(){
 	
 	canvas.width = canvas.width; // Clear the canvas
 	
-	context.strokeStyle = "#df4b26";
+	context.strokeStyle = "blue";
 	context.lineJoin = "round";
 	context.lineWidth = 5;
-	
-	for (var i = 0; i < clickX.lenght; i++){
+		
+	for (var i = 0; i < clickX.length; i++){
 		
 		context.beginPath();
 		if(clickDrag[i] && i){
 			context.moveTo(clickX[i-1], clickY[i-1]);
 		}else{
-			context.moveTo(click[i]-1, clickY[i]);
+			context.moveTo(clickX[i]-1, clickY[i]);
 		}
 		
-		context.lineTo(click[i], clickY[i]);
+		context.lineTo(clickX[i], clickY[i]);
 		context.closePath();
-		context.stroke;
+		context.stroke();
 		
 	}
 	
