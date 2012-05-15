@@ -2,9 +2,10 @@
 // We don't use this type of element to prepare a canvas for HTML5 because some browsers (IE) doesn't support it
 //context = document.getElementById('canvasDiv').getContext("2d");
 
+var canvas;
 
 var canvasWidth = 500;
-var canvasHeight = 500;
+var canvasHeight = 250;
 
 var clickX = new Array();
 var clickY = new Array();
@@ -53,6 +54,7 @@ function prepareCanvas() {
 	
 		if(paint){
 			addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+			redraw();
 		}
 	
 	});
@@ -99,7 +101,7 @@ function redraw(){
 		
 		context.beginPath();
 		if(clickDrag[i] && i){
-			context.moveTo(clickX[i-1], clickY[i+1]);
+			context.moveTo(clickX[i-1], clickY[i-1]);
 		}else{
 			context.moveTo(click[i]-1, clickY[i]);
 		}
