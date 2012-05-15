@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//IT" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="it"><head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" media="screen" href="rettangolo/cssie8.css" />
+        <title>Explain Query tree</title>
+        <script src="treeDrawFile/raphael.js" type="text/javascript" charset="utf-8"></script>
+		<script src="treeDrawFile/Interface.js" type="text/javascript" charset="utf-8"></script>
+		<script src="treeDrawFile/RaphaelZPD.js" type="text/javascript" charset="utf-8"></script>
+		<script src="treeDrawFile/RaphaelAdapter.js" type="text/javascript" charset="utf-8"></script>
+		<script src="treeDrawFile/RaphaelZPDAdapter.js" type="text/javascript" charset="utf-8"></script>
+		<script src="treeDrawFile/MostraInfo.js" type="text/javascript" charset="utf-8"></script>	
+		<script src="treeDrawFile/NodoLogico.js" type="text/javascript" charset="utf-8"></script>
+		<script src="treeDrawFile/NodoGrafico.js" type="text/javascript" charset="utf-8"></script>
+		<script src="treeDrawFile/alberoBase.js" type="text/javascript" charset="utf-8"></script>
+		<script src="treeDrawFile/AlberoClassico.js" type="text/javascript" charset="utf-8"></script>
+		<script src="treeDrawFile/AlberoMisto.js" type="text/javascript" charset="utf-8"></script>
+		<script src="treeDrawFile/AlberoVerticale.js" type="text/javascript" charset="utf-8"></script>
+        <script src="treeDrawFile/CreaAlbero.js" type="text/javascript" charset="utf-8"></script>
+		
+	</head>
+    <body>
+	</body>
+	<script>
+			var corpo = document.getElementsByTagName("body");
+		var divPadre = document.createElement("div");
+		corpo[0].appendChild(divPadre);
+		
+		var menuSelect = document.createElement("select");
+		menuSelect.setAttribute("id", "choiceMenu");
+		divPadre.appendChild(menuSelect);
+		
+		var opzione = document.createElement("option");
+		opzione.setAttribute("value", "Classico");
+		opzione.innerHTML = "Classico";
+		opzione.setAttribute("selected", "selected");
+		menuSelect.appendChild(opzione);
+		opzione = document.createElement("option");
+		opzione.setAttribute("value", "Misto");
+		opzione.innerHTML = "Misto";
+		menuSelect.appendChild(opzione);
+		opzione = document.createElement("option");
+		opzione.setAttribute("value", "Verticale");
+		opzione.innerHTML = "Verticale";
+		menuSelect.appendChild(opzione);
+		
+		var button = document.createElement("input");
+		button.setAttribute("type", "button");
+		button.setAttribute("value", "Disegna Albero");
+		button.setAttribute("selected", "selected");
+		divPadre.appendChild(button);
+		
+		var divSpazioGrafico = document.createElement("div");
+		divSpazioGrafico.setAttribute("id", "spazioPerGrafico");
+		corpo[0].appendChild(divSpazioGrafico);
+	
+	
+	// parte per test locale <--- funziona con FF e IE. Chrome va avviato con
+	var xhr;
+	if(window.XMLHttpRequest && (window.location.protocol !== "file:" || !window.ActiveXObject)) {
+	
+		xhr = new window.XMLHttpRequest();
+	}
+	else {
+		xhr = new window.ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	// xhr.onreadystatechange = function() {
+		// if (xhr.readyState==4) {
+			// callback(xhr.responseText);
+		// }
+	// }
+	// qui pos file locale
+	xhr.open("GET", "./treeDrawFile/esJSON.txt",  false); 
+	xhr.send(null);
+	var JSONObj = eval('(' + xhr.responseText + ')');
+	var disegnatore = new CreaAlbero();
+	disegnatore.init(JSONObj);
+	disegnatore.ridisegnaAlbero("choiceMenu", "spazioPerGrafico");
+	button.onclick = function() {
+				disegnatore.ridisegnaAlbero("choiceMenu", "spazioPerGrafico");
+				}
+	
+	</script>
+</html>

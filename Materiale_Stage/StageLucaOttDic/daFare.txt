@@ -1,0 +1,8 @@
+View
+- mettere scroll bar (personali non del browser)
+Controller
+- vedere quali operazioni bisogna controllare numero righe. Valutare se concretizzare l'unico metodo di Evaluation Abstract
+- Model
+Negli explain creare array con le operazioni con cui controllare le informazioni aggiuntive (ovvero se cercare nel XML/tabella del plan le informazioni per la tabella e il filtro)
+Controllare per Oracle le operazioni (link: http://docs.oracle.com/cd/B14117_01/server.101/b10752/ex_plan.htm#23465
+Se possibile ridurre conversioni a Nodo (classe creata da Marco) e gestire tutto tramite InterfaceNodo

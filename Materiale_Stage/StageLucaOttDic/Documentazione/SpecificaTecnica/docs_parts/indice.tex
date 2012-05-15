@@ -1,0 +1,29 @@
+% NON TOCCARE QUESTO FILE. EVENTUALI MODIFICHE VANNO RICHIESTE NEL GROUP.
+% QUESTO FILE DEFINISCE ANCHE LE NUOVE DIRETTIVE PER LA NUMERAZIONE ARABICA E INTESTAZ
+
+% Inizio indice dei contenuti
+\lhead{Indice}
+\pdfbookmark[1]{Indice}{indice}
+\
+\vspace{0.3cm}
+\tableofcontents
+\newpage
+%Inizio indice delle Figure
+\lhead{Elenco delle Figure}
+\pdfbookmark[1]{Elenco delle Figure}{elenco delle figure}
+\
+\vspace{0.3cm}
+\listoffigures
+\newpage
+%Indice delle Tabelle
+\lhead{Indice delle Tabelle}
+\pdfbookmark[1]{Indice delle Tabelle}{elenco delle tabelle}
+\
+\vspace{0.3cm}
+\listoftables
+\newpage
+
+%Nuove direttive per la testa del documento nella parte di numerazione arabica
+\pagenumbering{arabic}
+\lhead{\varTitle \ \varVersione} 
+\rfoot{\thepage\ di \pageref{LastPage} } % Sostituire il numero di pagine con un comando?

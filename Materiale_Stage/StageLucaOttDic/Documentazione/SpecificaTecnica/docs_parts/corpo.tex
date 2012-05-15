@@ -1,0 +1,406 @@
+\section{Introduzione}
+\subsection{Scopo del documento}
+Il presente documento ha lo scopo di definire l'architettura dell'interfaccia per il tool \textit{Visual Query}. Tale definizione inizia descrivendo il prodotto ad alto livello, dopo la quale segue un'analisi a basso livello.
+\subsection{Scopo del prodotto}
+Il visualizzatore di piani SQL ha come obiettivo il fornire una visione semplice e completa di un
+piano di esecuzione SQL. Creando quest'interfaccia sarà possibile avere una visione più chiara di
+come una \textit{query} verrà eseguita da un determinato database potendo quindi ottimizzarla nel caso
+si accerti la presenza di operazione onerose o da evitare. L'interfaccia sarà parte integrante del
+tool \textit{Visual Query}\ che è una componente del prodotto software \textit{SITEPAINTER Portal Studio}, di proprietà dell'azienda \textit{Zucchetti SpA}.
+\subsection{Riferimenti}
+\begin{itemize}
+\item JavaScript Documentation
+\LINK{https://developer.mozilla.org/en/JavaScript}
+\item Raphael Reference
+\LINK{http://raphaeljs.com/reference.html}
+\item Raphael ZPD Reference
+\LINK{https://github.com/semiaddict/raphael-zpd}
+\item XHTML Reference
+\LINK{http://www.w3.org/TR/2002/REC-xhtml1-20020801/}
+\item HTML5
+\LINK{http://www.w3.org/TR/html5/}
+\end{itemize}
+\newpage
+\section{Definizione del prodotto}
+\subsection{Architettura di SITEPAINTER Portal Studio}
+Il prodotto si basa sull'architettura \textit{Three Tier}, la quale viene spesso considerata come un evoluzione del modello \textit{Client-Server}\ in quanto viene aggiunto un nuovo modulo che gestisce il trasferimento dei dati dal livello \textit{client}\ al livello dell'archivio dei dati. Questo modulo aggiuntivo rende indipendente il livello \textit{client}\ dai problemi di accesso al livello \textit{server}. Il pattern architetturale \textit{Three Tier}\ divide quindi il sistema in tre diversi moduli, dedicati all'interfaccia utente, alla logica funzionale (\textit{business logic}) e alla gestione dei dati persistenti. Questi tre livelli sono generalmente identificati in:
+\begin{itemize}
+\item Un'interfaccia, spesso rappresentata da un \textit{Web Server}\ e da eventuali contenuti statici;
+\item La \textit{Business logic}, che in genere coincide con un application server che genera i contenuti dinamici;
+\item I dati memorizzati, che sono manipolati dalla \textit{Business Logic}\ sono memorizzati quasi sempre in un database, che ne assicura la persistenza.
+\end{itemize}
+L'ambiente di sviluppo aziendale, SitePainter Infinity, si basa proprio su questa struttura e si
+compone quindi di 3 strati:
+\begin{itemize}
+\item \textit{Presentation Tier}
+\item \textit{Business Tier}
+\item \textit{Data Tier}
+\end{itemize}
+Per capire meglio come funzionano i tre strati verrà ora analizzato il percorso con cui vengono processate le richieste dell'utente. Inizialmente l'utente digita sulla barra degli indirizzi del proprio \textit{browser}\ un \textit{URL}, la richiesta viene quindi trasformata in una operazione di \textit{POST}\ o \textit{GET}, che viene poi indirizzata al \textit{server Web}. A questo punto le richieste statiche vengono fornite dal \textit{server Web}\ stesso, mentre quelle dinamiche vengono inoltrate all'\textit{Application Server}\ dove saranno processate da una applicazione (secondo strato) che creerà dei \textit{Business Object}\ che rappresenteranno le richieste. In caso di necessità di lettura dei dati, vengono inviate le richieste al \textit{Database Server}, ovvero al terzo ed ultimo strato. Il database processa quindi la richiesta e ritorna i dati al \textit{Business Object}, con i quali viene creata una pagina HTML di risposta. Tale pagina viene passata al \textit{Web Server}\ e infine torna indietro fino al \textit{browser}\ dell'utente. Solitamente \textit{Web Server}\ e \textit{Application Server}\ risiedono nella stessa macchina, in quanto hanno un gran volume di dati da scambiare, mentre il \textit{Business Logic}\ può risiedere sulla stessa macchina del \textit{Web Server}, in caso di piccole applicazioni (si pensi ai server così detti \textit{LAMP}), o, in alternativa, su un \textit{cluster}\ composto da molti computer nel caso di applicazioni utilizzate da migliaia di utenti: in questo caso il Web Server inoltra i parametri necessari verso la macchina destinata a rispondere all'utente in questione.  La figura sottostante (figura \RIF{fig:SitePainter}) è a puro scopo illustrativo e non è una rappresentazione corretta e completa del funzionamento di SITEPAINTER, ma aiuta a capirne il funzionamento di base.
+\FIGURA{images/ThreeTier.png}{Schema funzionamento SITEPAINTER}{fig:SitePainter}{150}
+\subsection{Struttura della componente Visual Query}
+La struttura di una componente integrabile con \textit{SITEPAINTER Portal Studio} è formata generalmente
+da tre parti:
+\begin{itemize}
+\item Il file \textit{JavaScript}, che deve chiamarsi \textit{nomeComponenteObj.js}, rappresenta il nucleo della componente stessa;
+\item Il file \textit{.edtdef} che definisce le proprietà personalizzabili della componente, l'inizializzazione dell'oggetto e altre proprietà che riguardano la componente;
+\item Il file \textit{java}, che deve chiamarsi \textit{nomeComponenteControl.java}\ che si occuperà di generare la pagina \textit{jsp}, associando i vari file \textit{.js}.
+\end{itemize}
+Ad ogni file \textit{js}\ o \textit{java}\ possono essere associati ulteriori file \textit{js}\ o \textit{java}\
+In questo stage saranno sviluppati esclusivamente dei file \textit{js}\ e una pagina \textit{jsp}, integrandosi con un tool già esistente, per cui lo studente non dovrà creare i file sopra menzionati.
+\newpage
+\section{Tecnologie e librerie utilizzate}
+\subsection{HTML 5}
+L'ultima versione in sviluppo del linguaggio HTML. Anche se è classificata come \textit{W3C Working Draft}, ovvero significa che le specifiche potranno essere soggette a modifiche in futuro, si può considerare abbastanza stabile e i motori di \textit{rendering}\ dei principali \textit{browser}\ offrono un supporto abbastanza ampio ai \textit{tag}\ più diffusi del linguaggio stesso.
+\subsection{JavaScript}
+È un linguaggio di \textit{scripting}\ orientato agli oggetti, scarsamente tipizzato e standard \textit{ECMA}. Essendo un linguaggio di \textit{scripting}\ non viene compilato, ma interpretato dal motore di \textit{rendering}\ del \textit{browser}. La conseguenza a questo comportamento è un importante vantaggio, ovvero il server non deve eseguire del codice, ma solo inviarlo e sarà il \textit{client}\ ad eseguirlo. Il linguaggio presenta anche due importanti svantaggi:
+\begin{itemize}
+\item Il codice \textit{javascript} va completamente scaricato prima di poter essere eseguito, questo può essere un problema se la connessione ad internet risulta lenta, ma l'ormai diffusa banda larga, anche in Italia, riduce, se non elimina, questo problema;
+\item Essendo l'intero codice a disposizione del \textit{client}\ stesso, questo può porre dei problemi  di sicurezza in quanto può essere alterato il codice stesso ed esporre il server all'invio di dati non corretti, costringendo a scrivere ulteriore codice di controllo lato server. Nel caso specifico questo problema non esiste, in quanto l'interfaccia sviluppata in questo progetto non invia dati al server, ma li riceve solamente.
+\end{itemize}
+Un'altra caratteristica di questo linguaggio è il considerare tutto come un oggetto, per questo non esistono classi, ma esclusivamente oggetti. Anche la definizione di un'ipotetica classe è un oggetto e gli oggetti che utilizzano questa definizione non sono delle istanze, come lo sarebbero in linguaggi come Java, ma degli altri oggetti che utilizzano la definizione come prototipo.
+\subsection{Raphael}
+Una piccola libreria scritta in JavaScript da Dmitry Baranovskiy che permette la creazione di oggetti grafici utilizzando le SVG W3C Recommendation o VML. Ogni oggetto creato con questa libreria è anche un oggetto \textit{DOM}\ e questo offre la possibilità di associare ad esso degli eventi, permettendo quindi due cose: la creazione in modo facile di oggetti grafici e la loro manipolazione in modo altrettanto semplice.
+\subsection{RaphaelZPD}
+Questa piccola libreria permette di estendere Raphael affinché sia possibile utilizzare le funzioni di \textit{zoom, drag e pan}. In essa vi è presente un bug che non permette la corretta associazione tra l'evento che attiva lo \textit{zoom}\ e la funzione che lo gestisce. Il bug riguarda i browser Internet Explorer ed Opera. In questi browser la libreria anziché associare l'evento \textit{mousewheel}, correttamente supportato, viene  associato l'evento \textit{DOMMouseScroll}\ che invece è supportato solo dal browser Firefox. Entrambi gli eventi si riferiscono al movimento della rotellina del mouse. Un membro interno dell'azienda avendo riscontrato questo bug in un'occasione precedente ha già provveduto a correggerlo, modificando la libreria originale. Il codice originale affetto dal bug era: \newline \newline
+\hspace*{10mm} \textbf{if (navigator.userAgent.toLowerCase().indexOf(’webkit’) > = 0) \{ \\
+\hspace*{15mm} me.root.addEventListener(’mousewheel’, me.handleMouseWheel, false);\\ 
+\hspace*{10mm} // Chrome/Safari \} \\ 
+\hspace*{10mm} else \{ \\
+\hspace*{15mm} me.root.addEventListener(’DOMMouseScroll’, me.handleMouseWheel, false); \\
+\hspace*{10mm}// Gli Altri}\} \\
+\newline
+La correzione è stata la seguente:\newline \newline
+\hspace*{10mm} \textbf{me.root.addEventListener(’mousewheel’, me.handleMouseWheel, false);\\ \hspace*{10mm} //Tutti gli altri \\
+\hspace*{10mm} me.root.addEventListener(’DOMMouseScroll’, me.handleMouseWheel, false); \\ 
+\hspace*{10mm} // Firefox} \\ \newline
+Ora la libreria associa entrambi gli eventi, ovvero \textit{mousewheel}\ e \textit{DOMMouseScroll}\ ad un qualsiasi browser, ma questo non crea alcun problema. In seguito all'analisi della libreria lo studente ha inoltre apportato un'altra piccola modifica, che permette di escludere che determinati oggetti grafici attivano la funzionalità di \textit{pan}\ (di default attivata da un click del mouse, ovvero l'evento \textit{onMouseDown}, in un qualunque punto dell'area disegnata).
+La modifica è ispirata già da quanto ha fatto l'autore per disabilitare la funzionalità \textit{drag}\ su specifici elementi, ovvero vi è un controllo su un campo dell'oggetto coinvolto nell'attivazione dell'attività di \textit{drag}. Il campo controllato è \textit{evt.target.draggable}, dove \textit{evt}\ indica un evento e target indica l'oggetto che è coinvolto nell'evento.
+Basandosi su questo è stata modificata la seguente riga di codice: \newline \newline
+\hspace*{10mm} \textbf{if (!me.opts.pan) return;}\\ 
+\newline
+in \newline \newline
+\hspace*{10mm} \textbf{if (!me.opts.pan || evt.target.canPan == false) return;}\\ 
+\newline
+Se il campo \textit{canPan}\ è false esegue un \textit{return}\ e non l'azione di \textit{pan}. Se un oggetto non ha questo campo non viene provocato alcun errore.
+La modifiche di questa libreria non rappresentano un problema, essendo non più sviluppata, questo perché in \textit{Raphael}\ sono in sviluppo le stesse funzionalità. Nella versione più recente (2.0.1) esse sono implementate, ma solo il \textit{drag}\ è efficiente, mentre lo \textit{zoom}\ e il \textit{pan}\ appesantiscono di molto l'esecuzione del codice da parte del browser. Quindi, solo per queste due ultime funzionalità la libreria sarà utilizzata e verrà indicata da qui in avanti come \textit{RaphaelZPDmodify}, per segnalare che non è la versione originale.
+\newpage
+
+\section{Specifica delle componenti}
+Nel seguente diagramma delle classi \textit{UML} sono illustrate le relazioni tra le singole classi. In seguito ogni classe sarà descritta ad alto livello, mentre solo le classi più rilevanti saranno descritte in modo più approfondita. Le classi Raphael e RaphaelZPDModify sono le librerie esterne e non saranno qui illustrate. Infine verrà illustrato brevemente l'algoritmo utilizzato per la creazione di un albero, comune a tutte le modalità possibili.
+\FIGURA{images/DiagrammaClassiComponenti.png}{Diagramma Componenti}{fig:DiagrammaComponenti}{160}
+\subsection{Descrizione delle componenti ad alto livello}
+\subsubsection{Nodo Logico}
+\begin{description}
+\item[Tipo]: Class;
+\item[Nome]: NodoLogico;
+\item[Descrizione]: Rappresenta la parte logica di un'operazione di una particolare \textit{query}, contenendo le informazioni relative al nome, il colore (giudizio) e le altre informazioni aggiuntive;
+\item[Relazioni d'uso o d'interfaccia con altri componenti]: Nessuna
+\end{description}
+\subsubsection{Mostra Info}
+\begin{description}
+\item[Tipo]: Class;
+\item[Nome]: MostraInfo;
+\item[Descrizione]: Si occupa di visualizzare tutte le informazioni aggiuntive di una singola operazione;
+\item[Relazioni d'uso o d'interfaccia con altri componenti]: Utilizza un riferimento di tipo IRaphaelInterface per creare degli oggetti grafici
+\end{description}
+\subsubsection{Nodo Grafico}
+\begin{description}
+\item[Tipo]: Class;
+\item[Nome]: NodoGrafico;
+\item[Descrizione]: Rappresenta la parte grafica di un'operazione di una particolare \textit{query}, illustrando le informazioni dell'operazione stessa e permettendo di effettuare sul sottoalbero il \textit{drag}, di nasconderlo e di evidenziarlo, ovvero nascondere il resto;
+\item[Relazioni d'uso o d'interfaccia con altri componenti]: Possiede un riferimento ad un NodoLogico per memorizzare i dati associati all'operazione, riferimento al NodoGrafico padre, se non è la radice, e ai Nodografico figli, se presenti. Possiede inoltre un riferimento di tipo IRaphaelInterface per disegnare i singoli oggetti grafici. Utilizza la classe MostraInfo per mostrare a video le informazioni aggiuntive di un'operazione.
+\end{description}
+\subsubsection{IRaphaelInterface}
+\begin{description}
+\item[Tipo]: Interface;
+\item[Nome]: IRaphaelInterface;
+\item[Descrizione]: Un'interfaccia che definisce i metodi utilizzabili dagli altri componenti per creare gli oggetti grafici. In questo ambito tecnologico l'interfaccia sarà fittizia in quanto JavaScript non permette la creazione di questo costrutto;
+\item[Relazioni d'uso o d'interfaccia con altri componenti]: Nessuno.
+\end{description}
+\subsubsection{RaphaelAdapter}
+\begin{description}
+\item[Tipo]: Class;
+\item[Nome]: RaphaelAdapter;
+\item[Descrizione]: Classe che richiama i metodi della libreria Raphael per ottenere degli oggetti grafici;
+\item[Relazioni di implementazione o ereditarietà]: Implementa l'interfaccia IRaphaelInterface.
+\item[Relazioni d'uso o d'interfaccia con altri componenti]: Mantiene un riferimento all'oggetto di tipo \textit{Raphael}, ottenuto dalla libreria Raphael.
+\end{description}
+\subsubsection{IRaphaelZPDInterface}
+\begin{description}
+\item[Tipo]: Interface;
+\item[Nome]: IRaphaelZPDInterface;
+\item[Descrizione]: Un'interfaccia che definisce un metodo per utilizzare la libreria RaphaelZPDModify. In questo ambito tecnologico l'interfaccia sarà fittizia in quanto JavaScript non permette la creazione di questo costrutto;
+\item[Relazioni d'uso o d'interfaccia con altri componenti]: Nessuno.
+\end{description}
+\subsubsection{RaphaelZPDAdapter}
+\begin{description}
+\item[Tipo]: Class;
+\item[Nome]: RaphaelZPDAdapter;
+\item[Descrizione]: Classe che richiama il metodo della libreria RaphaelZPDModify per attivare su un oggetto Raphael le funzionalità offerte dalla libreria;
+\item[Relazioni d'implementazione o ereditarietà]: Implementa l'interfaccia IRaphaelZPDInterface;
+\item[Relazioni d'uso o d'interfaccia con altri componenti]: Nessuno.
+\end{description}
+\subsubsection{AlberoBase}
+\begin{description}
+\item[Tipo]: AbstractClass;
+\item[Nome]: AlberoBase;
+\item[Descrizione]: Offre le funzionalità base comuni a tutte le modalità di disegno dell'albero;
+\item[Relazioni d'uso o d'interfaccia con altri componenti]: Nessuno.
+\end{description}
+\subsubsection{Albero Misto}
+\begin{description}
+\item[Tipo]: Class;
+\item[Nome]: AlberoMisto;
+\item[Descrizione]: Si occupa di creare i nodi grafici e di ordinarli in modo da creare un albero diviso in due, sinistra e destra. La parte sinistra ha queste caratteristiche:
+\begin{itemize}
+\item Ogni nodo di un certo livello è allineato con qualunque nodo dello stesso livello;
+\item Ogni nodo padre ha sotto di sé, se ne possiede, i nodi figli, ma non è centrato rispetto ad essi.
+\end{itemize}
+La parte destra è speculare, ma i nodi anziché allineati sono incolonnati e i nodi sono a destra del padre e non sotto.
+\item[Relazioni d'implementazione o ereditarietà]: Eredita da AlberoBase;
+\item[Relazioni d'uso o d'interfaccia con altri componenti]: crea gli oggetti di tipo NodoGrafico e passa ad essi un riferimento a RaphaelAdapter.
+\end{description}
+\subsubsection{Albero Verticale}
+\begin{description}
+\item[Tipo]: Class;
+\item[Nome]: AlberoVerticale;
+\item[Descrizione]: Si occupa di creare i nodi grafici e di ordinarli in modo da creare un albero diviso con queste caratteristiche:
+\begin{itemize}
+\item Ogni nodo di un certo livello è incolonnato rispetto ai nodi dello stesso livello;
+\item Ogni nodo è distanziato in altezza dal fratello successivo in base alla grandezza del
+proprio sottoalbero;
+\item Il primo figlio di un certo nodo è spostato rispetto al padre a destra e in basso in base
+della grandezza del nodo padre.
+\end{itemize}
+\item[Relazioni d'implementazione o ereditarietà]: Eredita da AlberoBase;
+\item[Relazioni d'uso o d'interfaccia con altri componenti]: crea gli oggetti di tipo NodoGrafico e passa ad essi un riferimento a RaphaelAdapter.
+\end{description}
+\subsubsection{Albero Classico}
+\begin{description}
+\item[Tipo]: Class;
+\item[Nome]: AlberoClassico;
+\item[Descrizione]: Si occupa di creare i nodi grafici e di ordinarli in modo da creare un albero diviso con queste caratteristiche:
+\begin{itemize}
+\item Ogni nodo di un certo livello è allineato con qualunque nodo dello stesso livello;
+\item Ogni nodo padre è incolonnato in modo tale che l'ipotetica linea che dividerebbe a metà il sottoalbero sia un'asse di simmetria per il nodo padre stesso.
+\end{itemize}
+\item[Relazioni d'implementazione o ereditarietà]: Eredita da AlberoBase;
+\item[Relazioni d'uso o d'interfaccia con altri componenti]: crea gli oggetti di tipo NodoGrafico e passa ad essi un riferimento a RaphaelAdapter.
+\end{description}
+\subsubsection{CreaAlbero}
+\begin{description}
+\item[Tipo]: Class;
+\item[Nome]: CreaAlbero;
+\item[Descrizione]: Classe che si occupa di memorizzare il JSON ottenuto dal server, di creare l'oggetto adatto a disegnare l'albero in base alla scelta effettuata dall'utente e di attivare le funzionalità di \textit{pan}\ e \textit{zoom}.
+\item[Relazioni d'uso o d'interfaccia con altri componenti]: Possiede un riferimento di tipo AlberoBase che verrà istanziato al sottotipo corretto in base alla scelta dell'utente, crea e mantiene un riferimento a \textit{IRaphaelInterface}\ per creare la superficie da disegno e crea un riferimento a IRaphaeelZPDInterface per implementare la funzionalità di \textit{zoom}\ e \textit{pan}.
+\end{description}
+\subsection{Descrizione in dettaglio delle singole componenti}
+Ora verranno descritte in modo più dettagliato alcune delle classi illustrate. I metodi con cinque o più parametri non sono rappresentati  all'interno del diagramma e sono contrassegnati da un asterisco (*) per mantenere la leggibilità. Verranno omessi nella descrizione la spiegazione dei metodi \textit{get}\ e \textit{set}\ il cui comportamento è deducibile dal nome dell'operazione stessa. Il segno \"-\" (minore) indicherà le funzioni private, o meglio quelle operazioni che nel linguaggio vero e proprio non saranno dichiarate come \textit{this.function()}, risultando inaccessibili dall'esterno della classe. Ogni membro di una classe è contraddistinto dal carattere \textit{underscore}\ ('\_'), con l'eccezione dei membri che rappresenterebbero delle variabili statiche.
+\subsubsection{NodoLogico}
+\FIGURA{images/NodoLogico.png}{Diagramma di classe Nodo Logico}{fig:NodoLogico}{120}
+\paragraph{Membri}
+\begin{itemize}
+\item \_nome: contiene una stringa che contiene il nome di un'operazione;
+\item \_colore: contiene una sa stringa che contiene il colore che indica il giudizio dato all'operazione lato server;
+\item \_proprieta: contiene un array che memorizza tutti i valori delle altre informazioni dell'operazione, più il valore del nome dell'operazione;
+\item \_nomiProprieta: contiene un array che memorizza tutti i nomi delle informazioni dell'operazione.
+\end{itemize}
+\paragraph{Funzionalità}
+\begin{itemize}
+\item init(nome:String, colore:String, proprieta:String[], nomiProprieta:String[]): costruttore dell'oggetto. Controlla che i valori siano coerenti, trasforma il valore di colore da letterale (es.: red) a una stringa che codifica il valore nello standard HEX (es.: \#ff9966).
+\end{itemize}
+\subsubsection{NodoGrafico}
+\FIGURA{images/NodoGrafico.png}{Diagramma di classe Nodo Grafico}{fig:NodoGrafico}{130}
+\paragraph{Membri}
+\begin{itemize}
+\item \_contenitore: rettangolo che delimita visualmente un NodoGrafico;
+\item \_figli: può essere vuoto, array che contiene i riferimenti ai figli;
+\item \_padre: null se è la radice, contiene il riferimento al NodoGrafico che funge da padre;
+\item \_connettore: rappresenta una linea che parte dal figlio e arriva al padre;
+\item \_infoLogiche: riferimento a NodoLogico che mantiene le varie informazioni logiche;
+\item \_hideButton: immagine a cui è associata la funzionalità per nascondere il proprio sottoalbero;
+\item \_hasHideSubTree: valore booleano per indicare se il nodo ha il proprio sottoalbero nascosto o meno;
+\item \_canvas: riferimento a RaphaelAdapter utilizzato per creare i vari oggetti grafici richiesti;
+\item \_iconReDraw: immagine a cui è associato l'evento che permette di considerare solo il sottoalbero, ovvero nascondere il resto dell'albero;
+\item \_isReDraw: valore booleano per indicare se il nodo ha il padre nascosto.
+\end{itemize}
+\paragraph{Funzionalità}
+\begin{itemize}
+\item \textbf{init(nome: String, colore: String, infoAggiuntive: String[], nomiInfoAggiuntive: String[], x: Integer, y:Integer, larghezza:Integer, altezza:Integer, canvas:RaphaelAdapter, padre:NodoGrafico)}: costruttore, i primi quattro parametri identificano le informazioni logiche del nodo, i quattro successivi la dimensione e le coordinate nello spazio, infine canvas è il riferimento utilizzato per disegnare gli oggetti grafici richiesti e padre è il riferimento al padre, se non è la radice, del nodo grafico. Il costruttore si occupa di creare la struttura base del nodo, ovvero di mostrare a video il nome, il colore associato e la possibilità di visionare le informazioni aggiuntive. In seguito se il nodo ha un padre aggiungerà le funzioni di \textit{drag}\ sul proprio sottoalbero e per poter considerare il proprio sottoalbero, ovvero nascondere il resto dell'albero;
+\item \textbf{getFirstAncientRedraw()}: ritorna il primo antenato di un nodo il cui membro \textit{\_iconReDraw}\ è uguale a true;
+\item \textbf{getLarghezzaSubTree()}: ritorna la larghezza del sottoalbero di un certo nodo, se invocato sulla radice ritorna la larghezza dell'albero;
+\item \textbf{getAltezzaSubTree()}: ritorna l'altezza del sottoalbero di un certo nodo, se invocato sulla radice ritorna l'altezza dell'albero;
+\item \textbf{hasHiddenChild()}: ritorna true se l'intero sottoalbero del nodo, escluso il nodo stesso, è nascosto;
+\item \textbf{getMinWidthSubTree()}: ritorna il valore minore occupato dall'albero sull'ipotetico asse x;
+\item \textbf{getMinHeightSubTree()}: ritorna il valore minore occupato dall'albero sull'ipotetico asse y;
+\item \textbf{spostaFigli(dx: Integer, dy: Integer)}: sposta i figli dei valori specificati come parametri.
+\item \textbf{aggiornaConnettore()}: aggiorna il connettore che va dal figlio al padre;
+\item \textbf{associarDag()}: attiva la funzionalità di \textit{drag};
+\item \textbf{addFiglio(figlio: NodoGrafico)}: associa al nodo un figlio, se è il primo figlio associato aggiunge la funzionalità per nascondere il proprio sottoalbero;
+\item \textbf{deleteTree()}: richiama sulla radice la funzione deleteSubTree(), indipendentemente dal nodo su cui viene invocato;
+\item \textbf{deleteSubTree()}: cancella il sottoalbero del nodo;
+\item \textbf{hideShowFigli(nascondiMostra: boolean)}: richiamando la funzione hideshow ricorsivamente, nasconde o mostra il sottoalbero del nodo da cui è stata richiamata;
+\item \textbf{hideShow(nascondiMostra: boolean, nascondiMostraConnettore: boolean)}: nasconda o mostra il nodo su cui è stata richiamata in base al valore di nascondiMostra. Se il nodo non è la radice valuta anche il secondo parametro per decidere se nascondere o mostrare il connettore verso il padre;
+\item \textbf{controllaSpazio(figlio: NodoGrafico, posto: String)}: ritorna true se in una certa direzione, rispetto a figlio vi è un fratello sinistro del figlio stesso;
+\item \textbf{calcoloCoordinate(x:Integer, y:Integer, a:Integer, b:Integer, altezzaXY:Integer, altezzaAB:Integer, larghezzaXY:Integer, larghezzaAB:Integer)} in base alle coordinate e alle dimensioni di due rettangoli, restituisce un array dove sono memorizzati i valori ideali da dove parte e finisce il connettore tra i due. L'array restituito è composto da 4 valori, primi due rappresentano la coordinata y e x del punto dove il connettore si collega al padre, gli altri due valori il punto in cui il connettore parte dal figlio;
+\item \textbf{ottieniCoordinate()}: restituisce un array con le coordinate per disegnare una curva in modo tale che parta da un certo punto, passi per due punti stabiliti e quindi termini in un altro punto. L'array è composto da due array di interi, il primo contiene le coordinate x e y dei punti di inizio e fine della curva, il secondo le coordinate dei punti in cui la curva deve passare;
+\item \textbf{reDrawFunction(outerThis: NodoGrafico)}: funzione che nasconde tutto tranne il sottoalbero del nodo passato come parametro. L'uso di outerThis è necessario in quanto all'interno di questa funzione ne viene dichiarata un'altra, questo implica un cambiamento all'interno di quest'ultima dello scope e vi è la necessità di riferirsi al nodo;
+\item \textbf{riMostraSottoAlberoPrecedente(outerThis: NodoGrafico)}: viene invocata solo da un nodo che non sia la radice e il cui padre è nascosto. La funzione mostra il sottoalbero precedente su cui era stata chiamata \textit{reDrawFunction}/ oppure l'albero intero
+\end{itemize}
+\subsubsection{MostraInfo}
+\FIGURA{images/MostraInfo}{Diagramma di classe di MostraInfo}{fig:MostraInfo}{70}
+\paragraph{Membri}
+\begin{itemize}
+\item \_rettangoloContenitore: rettangolo che delimita il contenuto dell'oggetto;
+\item \_rettangoloRilevaEvento: rettangolo delle stesse dimensioni di \textit{\_rettangoloContenitore}\ che si occupa di rilevare l'evento \textit{onmouseout};
+\item \_arrayText: contiene gli elementi testuali disegnati;
+\item \_arrayPath: contiene le linee disegnate per separare le singole informazioni, utili per aiutare una persona a leggere meglio il testo;
+\item \_isDisegnato: questo valore è \textit{true}\ se l'oggetto è visibile a video
+\end{itemize}
+\paragraph{Funzionalità}
+\begin{itemize}
+\item \textbf{crea(nomiProp: String[], infoProp: String[], canvas:RaphaelAdapter, x:Integer, y:Integer)}: disegna a video i valori di nomiProp e infoProp, partendo dalla posizione (x,y);
+\item \textbf{remove()}: cancella quanto disegnato;
+\end{itemize}
+\subsubsection{IRaphaelInterface}
+\FIGURA{images/IRaphaelInterface}{Diagramma di classe di IRaphaelInterface}{fig:IRaphaelInterface}{100}
+\paragraph{Funzionalità}
+\begin{itemize}
+\item \textbf{createCanvas()}: crea un oggetto di tipo Raphael che rappresenta la superficie dove saranno disegnati i componenti di dimensione (0,0). Se è già istanziato non fa nulla;
+\item \textbf{createRect(x:Integer, y:Integer, larghezza:Integer, altezza:Integer, angoliSmussati:Integer)}: crea un oggetto di tipo \textit{Rect}, tipo proprio della libreria Raphael, utilizzando i primi quattro parametri come dimensione, \textit{angoliSmussati}\ indica quanto gli angoli devono essere arrotondati;
+\item \textbf{createCircle(x:Integer, y:Integer, r:Integer)}: crea un oggetto di tipo \textit{Circle}, tipo proprio della libreria Raphael, utilizzando i primi 2 parametri come posizione, il terzo come raggio;
+\item \textbf{createImage(path:String, x:Integer, y:Integer, larghezza:Integer, altezza:Integer)}: crea un oggetto di tipo \textit{Image}, tipo proprio della libreria Raphael, dove \textit{path}\ è il percorso dove risiede l'immagine, gli altri i parametri di dimensione;
+\item createPath(coord: String) return Path: crea un oggetto di tipo path, che rappresenta una linea che può essere costruita in diversi modi. \textit{coord} dev'essere una stringa che rispetta le direttive SVG per i path. Le direttive sono consultabili a questo indirizzo web: \\
+\LINK{http://www.w3.org\/TR\/SVG\/paths.html\#PathData}
+\end{itemize}
+\subsubsection{IRaphaelZPDInterface}
+\FIGURA{images/IRaphaelZPDInterface}{Diagramma di classe di IRaphaelZPDInterface}{fig:IRaphaelZPDInterface}{100}
+\paragraph{Funzionalità}
+\begin{itemize}
+\item init(canvas: Raphael, isZoom:boolean, isPan:boolean, isDrag:boolean): permette di aggiungere l3 funzionalità zoom, pan o drag all'oggetto \textit{canvas}\ passato, che dev'essere di tipo Raphael.
+\end{itemize}
+\subsubsection{CreaAlbero}
+\FIGURA{images/CreaAlbero.png}{Diagramma di classe CreaAlbero}{fig:CreaAlbero}{90}
+\paragraph{Membri}
+\begin{itemize}
+\item \_lunghezzaNodoStandard: lunghezza che dovranno avere i vari nodi creati;
+\item \_altezzaNodoStandard: altezza che dovranno avere i vari nodi creati;
+\item \_spazioStandard: spazio minimo tra un nodo e un altro;
+\item \_JSONOriginale: JSON ottenuto dal server;
+\item \_creatorGraphicalObject: riferimento a RaphaelAdapter;
+\item \_modalitaDisegnata: identifica l'ultima modalità che è stata creata;
+\item \_tipoDisegno: riferimento ad un sottotipo di AlberoBase;
+\end{itemize}
+\paragraph{Funzionalità}
+\begin{itemize}
+\item \textbf{init(JSon:JSON, nomeId:String)}: questa funzione inizializza la variabile \textit{\_JSONOriginale};
+\item \textbf{dimensioneCanvas(obj: Element)}: in base all'oggetto DOM passato, restituisce le dimensioni che questo oggetto può occupare in base alla dimensioni della finestra e di altri oggetti che eventualmente lo contengono. In questo ambito viene utilizzato per calcolare la dimensione che dovrà occupare il div che contiene il canvas. Restituisce un array con le dimensioni che dovrà occupare il canvas stesso;
+\item \textbf{crea(choice: String)}: il metodo si occupa di inizializzare \textit{\_tipoDisegno}\ in base al valore di \textit{choice}, stringa che rappresenta la scelta dell'utente e quindi richiamare il metodo per la creazione dell'albero; 
+\item \textbf{ridisegnaAlbero(idMenu: String, nomeId: String)}: il metodo recupera da un oggetto DOM il cui Id è il valore di idMenu la scelta dell'utente, se è uguale a quella già disegnata non fa nulla. Se è diversa cancella quanto disegnato e crea un oggetto di tipo RaphaelAdapter passando al costruttore il valore di nomeId, ovvero il nome dell'Id dell'oggetto DOM dove sarà disegnato il grafico. Richiama infine il metodo \textit{crea}.
+\end{itemize}
+\subsubsection{AlberoBase}
+\FIGURA{images/AlberoBase.png}{Diagramma di classe AlberoBase}{fig:AlberoBase}{90}
+\paragraph{Membri}
+\begin{itemize}
+\item \_lunghezzaNodoStandard: lunghezza che dovranno avere i vari nodi creati;
+\item \_altezzaNodoStandard: altezza che dovranno avere i vari nodi creati;
+\item \_spazioStandard: spazio minimo tra un nodo e un altro;
+\item \_padre: riferimento alla radice dell'albero;
+\end{itemize}
+\paragraph{Funzionalità}
+\begin{itemize}
+\item \textbf{cancellaAlbero()}: cancella l'albero disegnato;
+\item \textbf{rimuoviNonInformazioni(JSonToClean: JSON)}: ricava dal json un array di stringhe che contiene l'elenco delle chiavi che riguardano solo le informazioni e il nome, rimuovendo colore e figli.
+\end{itemize}
+\subsubsection{AlberoMisto}
+\FIGURA{images/AlberoMisto.png}{Diagramma di classe AlberoMisto}{fig:AlberoMisto}{150}
+\paragraph{Membri}
+\begin{itemize}
+\item inheritFrom: riferimento ad un oggetto di tipo AlberoBase. Visti i limiti del linguaggio javaScript l'ereditarietà è "simulata" invocando il costruttore di AlberoBase all'interno della definizione di AlberoMisto.
+\end{itemize}
+\paragraph{Funzionalità}
+\begin{itemize}
+\item \textbf{aggiustaLivelloVerticale(profondita: Integer, differenza: Integer, nodiCreati: NodoGrafico[][])}: sposta un certo livello del sottoalbero sinistro pari a differenza (può essere un valore negativo), dopodiché si assicura che i livelli sottostanti siano almeno alla distanza minima dal livello modificato e richiama se stessa se non è così. \textit{NodiCreati}\ è un array dove ogni elemento è l'array che contiene tutti i NodiGrafico di un certo livello;
+\item \textbf{aggiustaLivelloOrizzontale(profondita: Integer, differenza: Integer, nodiCreati: NodoGrafico[][])}: sposta un certo livello del sottoalbero destro pari a differenza (può essere un valore negativo), dopodiché si assicura che i livelli sottostanti siano almeno alla distanza minima dal livello modificato e richiama se stessa se non è così. \textit{NodiCreati}\ è un array dove ogni elemento è l'array che contiene tutti i NodiGrafico di un certo livello;
+\item \textbf{\textbf{sistemaLivelli(nodiDestra: NodoGrafico[], nodiSinistra: NodoGrafico[][], angle:float, profondita:Integer)}}: funzione che si assicura che l'intero livello di un albero, in base al valore di \textit{profondita}, sia alla distanza più grande tra lo spazio minimo tra un livello e l'altro e la coordinata affinché il livello non possa sforare nell'area dell'altro sottoalbero. \textit{nodiDestra}\ e  \textit{nodiSinistra}\ sono array dove ogni elemento è l'array che contiene tutti i NodiGrafico di un certo livello di un certo sottoalbero;
+\item \textbf{ottimizzaSpazio(nodiSinistra: NodoGrafico[][], nodiDestra: NodoGrafico[][], profondita: Integer)}: Ottimizza lo spazio occupato dall'albero, permettendo ai livelli di sforare nell'area dell'altro sottoalbero se possibile, ovvero senza sovrapporsi ad altri nodi, la funzione considera dei due livelli quali dei due è più lontano dal livello precedente e cerca di spostare quello più distante. \textit{nodiDestra}\ e  \textit{nodiSinistra}\ sono array dove ogni elemento è l'array che contiene tutti i NodiGrafico di un certo livello di un certo sottoalbero;
+\item \textbf{ottimizzaSpazioSinistra(nodiSinistra: NodoGrafico[][], nodiDestra: NodoGrafico[][], profondita: Integer)}: Ottimizza lo spazio occupato dal sottoalbero di sinistra, permettendo ai livelli di sforare nell'area dell'altro sottoalbero se possibile, ovvero senza sovrapporsi ad altri nodi, la funzione è invocata quando da una certa profondità in poi solo il sottoalbero sinistro esiste. \textit{nodiDestra}\ e  \textit{nodiSinistra}\ sono array dove ogni elemento è l'array che contiene tutti i NodiGrafico di un certo livello di un certo sottoalbero;
+\item \textbf{ottimizzaSpazioDestra(nodiSinistra: NodoGrafico[][], nodiDestra: NodoGrafico[][], profondita: Integer)}: Ottimizza lo spazio occupato dal sottoalbero di destra, permettendo ai livelli di sforare nell'area dell'altro sottoalbero se possibile, ovvero senza sovrapporsi ad altri nodi, la funzione è invocata quando da una certa profondità in poi solo il sottoalbero destro esiste. \textit{nodiDestra}\ e  \textit{nodiSinistra}\ sono array dove ogni elemento è l'array che contiene tutti i NodiGrafico di un certo livello di un certo sottoalbero;
+\item \textbf{creaFigli(nodiPerLivello: Integer[], profondita: Integer, figli: JSON, padre: NodoGrafico, canvas: RaphaelAdapter, offset: Integer, nodiCreati: NodoGrafico[][], tipo: String, dimSpostamento: Integer)}: crea i nodi per ogni livello di un certo sottoalbero, i parametri hanno il seguente significato:
+\begin{itemize}
+\item nodiPerLivello, contiene i nodi che rimangono da disegnare per ogni livello;
+\item profondita, la profondita a cui si è;
+\item figli, i figli che rimangono da disegnare in formato JSON;
+\item padre, il padre dei nodi che sono da disegnare;
+\item canvas, riferimento da passare ai vari NodiGrafico affinché possano disegnare i vari oggetti;
+\item offset, valore che stabilisce in base al parametro tipo quanto i nodi debbano essere disegnati distanti da un certo asse;
+\item nodiCreati, i nodi creati fino all'invocazione del metodo creati;
+\item tipo, il tipo, ovvero se il sottoalbero dev'essere disegnato come "verticale" o "orizzontale";
+\item dimSpostamento, ogni nodo che viene creato è spostato rispetto al precedente come minimo di questo valore.
+\end{itemize}
+Restituisce offset calcolato in base ai nodi creati e alla loro posizione.
+\item \textbf{calcoloNodiPerLivello()} : restituisce un array dove ogni valore contiene il numero di nodi che saranno da creare ad una certa profondità;
+\item \textbf{creaRadice(Json: JSON, canvas: RaphaelAdapter, lunghezza: Integer, altezza: Integer, spazioTraNodi: Integer)} : crea il NodoGrafico radice e dopo richiama \textit{creaFigli}.
+\end{itemize}
+\subsubsection{AlberoVerticale}
+\FIGURA{images/AlberoVerticale.png}{Diagramma di classe AlberoVerticale}{fig:AlberoVerticale}{50}
+\paragraph{Membri}
+\begin{itemize}
+\item inheritFrom: riferimento ad un oggetto di tipo AlberoBase. Visti i limiti del linguaggio javaScript l'ereditarietà è "simulata" invocando il costruttore di AlberoBase all'interno della definizione di AlberoVerticale.
+\end{itemize}
+\paragraph{Funzionalità}
+\begin{itemize}
+\item \textbf{creaFigli(nodiPerLivello: Integer[], profondita: Integer, figli: JSON, padre: NodoGrafico, canvas: RaphaelAdapter, offset: Integer, nodiCreati: NodoGrafico[][], tipo: String, dimSpostamento: Integer)}: crea i nodi per ogni livello di un certo sottoalbero, i parametri hanno il seguente significato:
+\begin{itemize}
+\item profondita, la profondita a cui si è;
+\item figli, i figli che rimangono da disegnare in formato JSON;
+\item padre, il padre dei nodi che sono da disegnare;
+\item canvas, riferimento da passare ai vari NodiGrafico affinché possano disegnare i vari oggetti;
+\item offset, valore che stabilisce in base al parametro tipo quanto i nodi debbano essere disegnati distanti da un certo asse;
+\item dimSpostamento, ogni nodo che viene creato è spostato rispetto al precedente come minimo di questo valore.
+\end{itemize}
+Restituisce offset calcolato in base ai nodi creati e alla loro posizione.
+\item \textbf{creaRadice(Json: JSON, canvas: RaphaelAdapter, lunghezza: Integer, altezza: Integer, spazioTraNodi: Integer)} : crea il NodoGrafico radice e dopo richiama \textit{creaFigli}.
+\end{itemize}
+\subsubsection{AlberoClassico}
+\FIGURA{images/AlberoClassico.png}{Diagramma di classe AlberoClassico}{fig:AlberoClassico}{50}
+\paragraph{Membri}
+\begin{itemize}
+\item inheritFrom: riferimento ad un oggetto di tipo AlberoBase. Visti i limiti del linguaggio javaScript l'ereditarietà è "simulata" invocando il costruttore di AlberoBase all'interno della definizione di AlberoClassico.
+\end{itemize}
+\paragraph{Funzionalità}
+\begin{itemize}
+\item \textbf{creaFigli(nodiPerLivello: Integer[], profondita: Integer, figli: JSON, padre: NodoGrafico, canvas: RaphaelAdapter, offset: Integer, nodiCreati: NodoGrafico[][], tipo: String, dimSpostamento: Integer)}: crea i nodi per ogni livello di un certo sottoalbero, i parametri hanno il seguente significato:
+\begin{itemize}
+\item profondita, la profondita a cui si è;
+\item figli, i figli che rimangono da disegnare in formato JSON;
+\item padre, il padre dei nodi che sono da disegnare;
+\item canvas, riferimento da passare ai vari NodiGrafico affinché possano disegnare i vari oggetti;
+\item offset, valore che stabilisce in base al parametro tipo quanto i nodi debbano essere disegnati distanti da un certo asse;
+\item nodiCreati, i nodi creati fino all'invocazione del metodo creati;
+\item dimSpostamento, ogni nodo che viene creato è spostato rispetto al precedente come minimo di questo valore.
+\end{itemize}
+Restituisce offset calcolato in base ai nodi creati e alla loro posizione.
+\item \textbf{creaRadice(Json: JSON, canvas: RaphaelAdapter, lunghezza: Integer, altezza: Integer, spazioTraNodi: Integer)} : crea il NodoGrafico radice e dopo richiama \textit{creaFigli}.
+\end{itemize}
+\subsection{Algoritmo di creazione Albero}
+Il diagramma di attività in figura \RIF{fig:DiagrammaAttivitaCreaAlbero}\ descrive come verrà disegnato un albero generico partendo dall'oggetto JSON ottenuto.
+\FIGURA{images/AlgoritmoAttivitaCreaAlbero}{Diagramma di attività Algoritmo creazione albero}{fig:DiagrammaAttivitaCreaAlbero}{150}
+L'algoritmo è semplice, viene contattato il server per il recupero di un file formattato secondo le direttive JSON, viene quindi trasformato in un oggetto JSON e vengono creati gli oggetti di tipo \textit{Raphael}\ e \textit{Raphael ZPDModify}, viene creata la radice tramite l'invocazione del metodo \textit{creaRadice()}, metodo eseguito sulla classe scelta in base alla tipologia di albero da disegnare (\textbf{AlberoMisto}, \textbf{AlberoVerticale}\ o \textbf{AlberoClassico}). Viene quindi chiamata ricorsivamente la funzione \textit{creaFigli()}, il cui funzionamento è desumibile dal diagramma di attività. Infine esegue gli aggiustamenti sulla struttura, ovvero si assicura che le posizioni relative tra i nodi siano corrette, se la classe prevede queste operazioni (\textbf{AlberoClassico}\ e \textbf{AlberoMisto}).
+\newpage
+\section{Design Pattern}
+\subsection{Adapter}
+Durante la fase di progettazione è stato deciso di utilizzare il pattern strutturale \textit{Adapter}.
+L'uso di questo pattern diventa utile quando interfacce di classi differenti devono poter comunicare
+tra loro.
+La struttura rappresentata in figura struttura del pattern \textit{Adapter}\ rappresenta un \textit{Object Adapter}\ ovvero utilizza la composizione tra oggetti e non l'ereditarietà.
+I Partecipanti del pattern \textit{Adapter}\ sono:
+\begin{description}
+\item [Adaptee]: definisce l'interfaccia che ha bisogno di essere adattata;
+\item [Target]: definisce l'interfaccia che usa il Client;
+\item [Client]: collabora con gli oggetti in conformità con l'interfaccia \textit{Target};
+\item [Adapter]: adatta l’interfaccia \textit{Adaptee} all'interfaccia \textit{Target}.
+\end{description}
+Nel contesto di questo progetto il pattern \textit{Adapter} viene usato due volte e serve a
+rendere l'interfaccia indipendente dalle librerie utilizzate, ovvero \textit{Raphael}\ e \textit{RaphaelZPDModify}. In questo modo sarà possibile cambiare la libreria grafica senza dover modificare l'interfaccia che utilizza il \textit{Client}. 

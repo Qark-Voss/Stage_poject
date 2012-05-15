@@ -1,0 +1,101 @@
+%struttura documento e pacchetti utilizzati
+
+\documentclass[a4paper,11pt]{article}
+\usepackage{fancyhdr}
+\usepackage[english, italian]{babel}
+\usepackage[top=2cm,bottom=2cm,left=2cm,right=3cm]{geometry}
+\pagestyle{fancy}
+\usepackage{graphicx}
+\usepackage[titles]{tocloft}
+\usepackage{eurosym}
+%\usepackage{rotating}
+\usepackage[utf8]{inputenc}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{amssymb}
+\usepackage{lastpage}
+\usepackage{url}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage[T1]{fontenc}
+\usepackage{setspace}
+\usepackage{multirow}
+\usepackage[pdftex,pdfborder={0 0 0 0},bookmarks=true, pdfauthor={Zeta Solutions}]{hyperref}
+\usepackage[italian]{babel}
+\usepackage{longtable}
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+\setcounter{table}{-1} % modifica per evitare l'inidicizzazione della long table.
+
+\hoffset = 20pt
+
+% header e footer con linee
+\headheight = 15pt
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+%\@startsection	{NAME}
+%				{LEVEL}
+%				{INDENT}
+%				{BEFORESKIP}
+%				{AFTERSKIP}
+%				{STYLE}
+\makeatletter
+\renewcommand{\section}{
+\@startsection 	{section}
+				{1}
+				{0ex} % indentazione
+				{8.25ex plus 1ex minus .2ex}
+				{5ex plus 5ex minus 2.5ex }
+				{\Huge\bfseries}
+}
+
+\renewcommand{\subsection}{
+\@startsection 	{subsection}
+				{2}
+				{0ex}
+				{-3.25ex plus -1ex minus -0.2ex}
+				{5ex plus 5ex minus 2.5ex }
+				{\Large\bfseries}
+}
+
+\renewcommand{\subsubsection}{
+\@startsection 	{subsubsection}
+				{3}
+				{0ex}
+				{3.25ex plus -1ex minus -0.2ex}
+				{5ex plus 5ex minus 2.5ex }
+				{\Large\bfseries}
+}
+
+\renewcommand{\paragraph}{
+\@startsection	{paragraph}
+				{4}
+				{0ex}
+				{-3.25ex plus -1ex minus -0.2ex}
+				{5ex plus 5ex minus 2.5ex }
+				{\Large\bfseries}
+}
+
+\renewcommand{\subparagraph}{
+\@startsection 	{subparagraph}
+				{5}
+				{5ex}
+				{-3.25ex plus -1ex minus -0.2ex}
+				{5ex plus 5ex minus 2.5ex }
+				{\normalsize\bfseries}
+}
+
+\makeatother
+\setlength{\parindent}{0in}
+
+\stepcounter{secnumdepth}
+\stepcounter{tocdepth}
+
+\chead{}
+\rhead{Visualizzatore Piani SQL} 
+
+\lfoot{}
+\cfoot{}
+
+
+% DOPO L'IMPORTAZIONE E AVER ESTESO IL TESTO, CHIUDERE IL DOCUMENTO!!!

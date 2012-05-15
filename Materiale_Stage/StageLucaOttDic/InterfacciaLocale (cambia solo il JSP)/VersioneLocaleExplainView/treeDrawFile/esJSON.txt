@@ -1,0 +1,6 @@
+{ 
+"color": "yellow", 
+"nome": "Hash Join", 
+"row": 1538,
+"time": "90%"
+}

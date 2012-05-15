@@ -1,0 +1,72 @@
+%%Questo file serve per scrivere lo storico delle revisioni, qui commentato trovate un esempio di come strutturare ogni singola voce revisione.
+
+\begin{footnotesize}
+\begin{longtable}{|c|c|l|p{7.5cm}|}
+\hline
+\textbf{DATA} & \textbf{VERSIONE} & \textbf{REDATTORI} &\textbf{MOTIVO DELLA MODIFICA}\\
+\hline \hline
+\endhead %Viene replicato ad ogni pagina, in cima alla tabella
+\multicolumn{4}{c}{\textsc{\textbf{\large Continua sulla pagina successiva}}} %viene aggiunto alla fine della pagina di ogni tabella, esclusa l'ultima
+\endfoot 
+\multicolumn{4}{c}{} %vuoto altrimenti aggiunge endfoot
+\endlastfoot
+%<-----------------------------------------------------------------------------------------------
+% DATA
+%\multirow{2}*{
+%	AAAA/MM/GG
+%} 
+%& %VERSIONE
+%\multirow{2}*{
+%	X.Y.Z
+%}
+%& % REDATTORI 
+%\multirow{2}[0]{3cm}{
+%        Nome Cognome 
+%}
+%& % MOTIVO REVISIONE
+%	titolo revisione con comandi predefiniti	\newline
+%	Motivo revisione.\\ \hline
+%<-----------------------------------------------------------------------------------------------
+
+% DATA
+\multirow{2}*{
+2011/10/20
+} 
+&% VERSIONE
+\multirow{2}*{
+	1.0.0
+}
+&% REDATTORI 
+\multirow{2}[0]{3cm}{
+Luca Fongaro
+}
+&% MOTIVO REVISIONE
+RILASCIO VERSIONE 	\newline
+Rilascio della versione 1.0\\
+\hline
+
+% DATA
+\multirow{2}*{
+2011/10/19
+} 
+&% VERSIONE
+\multirow{2}*{
+	0.1.0
+}
+&% REDATTORI 
+\multirow{2}[0]{3cm}{
+Luca Fongaro
+}
+&% MOTIVO REVISIONE
+\PS	\newline
+Prima stesura del documento\\
+\hline
+\end{longtable}
+
+
+\end{footnotesize}
+\newpage
+
+
+
+

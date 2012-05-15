@@ -1,0 +1,199 @@
+% QUESTO E IL CORPO DEL DOCUMENTO, GESTITELO COME VOLETE.
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+% % % % % % % ELECO COMANDI DISPONIBILI % % % % % % % % %
+% RIFARSI AI FILE:
+% docs_utils/ricorrenti
+% docs_utils/utili
+% 
+% ricordo che se aggiungete de comandi notificatelo affinche tutti possano fruirne .
+\section{Introduzione}
+\subsection{Scopo del documento}
+Il presente documento contiene una descrizione dei requisiti e dei casi d'uso emersi dall'attività
+di analisi eseguita, sul progetto di stage \textit{Visualizzatore piani SQL}.
+Lo scopo finale è quello di fornire al committente una visuale dettagliata sulle tecnologie implementative che verranno utilizzate e sulle funzionalità implementate per svolgere questo progetto.
+\subsection{Scopo del prodotto}
+Il visualizzatore di piani SQL ha come obiettivo il fornire una visione semplice e completa di un piano di esecuzione SQL. Creando quest'interfaccia sarà possibile avere una visione più chiara di come una \textit{query}\ verrà eseguita da un determinato database potendo quindi ottimizzarla nel caso si accerti la presenza di operazione onerose o da evitare. L'interfaccia sarà parte integrante del tool \textit{Visual Query}\ che è una componente del prodotto software \textit{SITEPAINTER Portal Studio}, di proprietà dell'azienda \textit{Zucchetti SpA}.
+\subsection{Riferimenti}
+\begin{itemize}
+\item JavaScript Documentation
+\LINK{https://developer.mozilla.org/en/JavaScript}
+\item Raphael Reference
+\LINK{http://raphaeljs.com/reference.html}
+\item XHTML Reference
+\LINK{http://www.w3schools.com/html/html_xhtml.asp}
+\item HTML5
+\LINK{http://www.w3schools.com/html5/html5_reference.asp}
+\end{itemize}
+\newpage
+\section{Descrizione Generale}
+\subsection{Contesto d'uso del prodotto}
+Il risultato finale di questo progetto è parte integrante di \textit{Visual Query}\ un tool il cui scopo è aiutare a gestire un database. Compito specifico di quest'interfaccia è visualizzare il costo delle singole operazioni che compongono una \textit{query} specifica. Per permettere questo verrà disegnato un grafico con struttura ad albero, la quale sarà composta da nodi che rappresentano i singoli passi che il database opererebbe se la \textit{query}\ fosse effettivamente eseguita. Ogni nodo avrà un nome, che descrive l'operazione, un colore, che rappresenta un giudizio sull'operazione stessa stabilito dall'applicazione lato server, e altre informazioni. Ogni nodo potrà avere zero o più figli associati che rappresentano altre operazioni da eseguire per completare l'operazione del padre.
+\subsection{Tecnologie utilizzate e ambiente di esecuzione}
+L'interfaccia è creata basandosi sulle tecnologie \textit{javascript}\ e \textit{XHTML}\ e \textit{HTML 5}\ e l'utilizzo della libreria \textit{Raphael}, l'interazione sarà possibile tramite i browser più recenti. Il prodotto intero, ovvero  \textit{SITEPAINTER Portal Studio}\ risiederà, invece, su un server di proprietà di un'azienda che ha acquistato il prodotto.
+\subsection{Funzioni dell'interfaccia}
+L'interfaccia permetterà all'utente di avere tutte le informazioni necessarie per analizzare i singoli passi della \textit{query}, visualizzando le informazioni più importanti ovvero nome dell'operazione e il giudizio ad esso associata, ovvero il colore, che sarà di cinque tipologie: \\
+\begin{itemize}
+\item Rosso: indica le operazioni che sono da evitare, in quanto fonte di un eccessivo costo;
+\item Giallo: indica le operazioni che possono essere comunque fonte di un eccessivo carico sul database;
+\item Verde: operazioni il cui risultato è direttamente proporzionale al numero di record ritornati (es. \textit{INDEX SCAN});
+\item Blu: operazioni il cui risultato non è direttamente collegato al numero di record ritornati e che indicano che il giudizio assegnato va valutato in base ad altre operazioni ad essa associate (es. \textit{DISTINCT, GROUP BY});
+\item Grigio scuro: operazioni per le quali non è stato possibile stabilire un giudizio in quanto non sono riconosciute.
+\end{itemize}
+Sarà possibile anche esaminare delle informazioni aggiuntive sull'operazione.\\
+\newline
+Tutte le operazioni saranno organizzate in un grafico con struttura ad albero che permetterà di comprendere l'ordine di esecuzione dei singoli passi. All'utente sarà anche offerta la possibilità di manipolare questa struttura potendo spostare singoli elementi o interi sotto-alberi e comprimendo i sotto alberi di un certo nodo.
+%Altro?
+\subsection{Tipologie di utenti}
+Per quest'interfaccia è prevista un'unica tipologia di utente, ovvero una persona con competenze di \textit{SQL}\ che sarà agevolata nel compito di ottimizzare le \textit{query}\ create per consultare un determinato database.
+\subsection{Vincoli generali}
+L'interfaccia dovrà essere sviluppata con tecnologia \textit{javascript}\ e dovrà essere correttamente fruibile nei browser:
+\begin{itemize}
+\item Firefox versione 7.0 o superiore
+\item Internet Explorer versione 8.0 o superiore
+\item Opera versione 11.0 o superiore
+\item Chrome versione 14.0 o superiore
+\item Safari versione 5.0 o superiore
+\end{itemize}
+L'interfaccia dovrà essere sviluppata basandosi sulle tecnologie \textit{javascript}, \textit{XHTML}\ e \textit{HMTL5}\ e sulla libreria \textit{Raphael}.
+\newpage
+\section{Diagrammi Use Case}
+\subsection{Diagramma Use Case Utente}
+\FIGURA{images/UC1.png}{Diagramma use case 1}{fig:UC1}{150}
+\begin{itemize}
+\item Attori principali: Utente
+\item Precondizioni:
+\begin{itemize}
+\item La struttura ad albero è stata disegnata correttamente
+\end{itemize}
+\item Scenario Principale:
+\begin{itemize}
+\item Visualizza Albero (UC1.1): l'utente è in grado di visionare ed analizzare l'output grafico per valutare l'efficienza di una particolare \textit{query}\ in maniera chiara;
+\item Manipola Struttura (UC1.2): si offre la possibilità all'utente di manipolare la struttura per adattarla alle sue esigenze;
+\item Visualizza informazioni aggiuntive (UC1.3): l'utente è in grado di visualizzare informazioni aggiuntive sulla singola operazione;
+\item Visualizza tabella statistiche (UC1.4): l'utente è in grado di visualizzare una tabella dove sono presenti delle statistiche inerenti il numero di operazioni per ogni categoria di giudizio.
+\end{itemize}
+\item Post-Condizione per successo: l'utente ha potuto svolgere una delle operazioni permesse.
+\end{itemize}
+\subsection{Diagramma Use Case Utente - Manipolazione Struttura}
+\FIGURA{images/UC1_2.png}{Diagramma use case 1.2}{fig:UC1}{150}
+\begin{itemize}
+\item Attori principali: Utente
+\item Precondizioni:
+\begin{itemize}
+\item La struttura ad albero è stata disegnata correttamente
+\end{itemize}
+\item Scenario Principale:
+\begin{itemize}
+\item Comprimi sotto albero (UC1.2.1): l'utente può nascondere tutti i nodi figli di un certo nodo;
+\item Sposta nodo (UC1.2.2): l'utente può spostare un singolo nodo;
+\item Sposta sotto-albero (UC1.2.3): l'utente può spostare un nodo e tutti i suoi figli.
+\end{itemize}
+\item Post-Condizione per successo: l'utente ha potuto svolgere una delle operazioni permesse.
+\end{itemize}
+\newpage
+\section{Requisiti}
+I requisiti di questo progetto vanno suddivisi in:
+\begin{itemize}
+\item \textbf{Funzionali}: descrivono le interazioni tra l'interfaccia e l'ambiente esterno, indipendentemente
+dall'implementazione, ovvero si interessano delle funzionalità fornite dal sistema.
+\item \textbf{Non funzionali}: descrivono aspetti dell'interfaccia che non sono legati direttamente alle funzionalità, ma che coinvolgono i dettagli implementativi dello stesso e si suddividono in:
+\begin{itemize}
+\item \textbf{Prestazionali}: descrivono requisiti del prodotto che aumentano l'efficienza globale del
+software fornito;
+\item \textbf{Di qualità}: descrivono requisiti del prodotto che possono aumentare la qualità del software
+fornito;
+\item \textbf{Di vincolo}: descrivono le condizioni da applicare all'intero prodotto e sono definiti prima che inizi l'effettiva raccolta dei requisiti.
+\end{itemize}
+\end{itemize}
+Che sia funzionale o non funzionale, ogni requisito deve essere catalogato in una delle seguenti
+categorie in base alla rilevanza strategica:
+\begin{itemize}
+\item \textbf{Obbligatorio}: l'interfaccia deve soddisfare necessariamente tale vincolo;
+\item \textbf{Desiderabile}: l'interfaccia può non soddisfare necessariamente tale vincolo, ma la sua presenza nel risultato finale attribuisce valore aggiunto all'interfaccia;
+\item \textbf{Opzionale}: il soddisfacimento di tale vincolo è facoltativo e la sua presenza nel risultato finale non attribuisce valore aggiunto all'interfaccia.
+\end{itemize}
+Si è deciso di attribuire un codice univoco a ogni singolo requisito, al fine di identificarli meglio
+in fase di tracciamento. Ogni codice di requisito sarà composto da tre lettere maiuscole e un
+numero (es. “FOB01”). La prima lettera serve a identificare la tipologia del requisito (funzionale
+o non funzionale) e sono qui descritte:
+\begin{itemize}
+\item \textbf{F}: requisito funzionale;
+\item \textbf{P}: requisito prestazionale (non funzionale);
+\item \textbf{Q}: requisito di qualità (non funzionale);
+\item \textbf{V}: requisito di vincolo (non funzionale).
+\end{itemize}
+La seconda e la terza lettera indicano la priorità del requisito:
+\begin{itemize}
+\item \textbf{OB}: requisito obbligatorio;
+\item \textbf{DE}: requisito desiderabile;
+\item \textbf{OP}: requisito opzionale.
+\end{itemize}
+Il numero è stato introdotto al fine di organizzare i requisiti in maniera gerarchica. In caso
+di requisito principale si avrà un solo numero, mentre in caso di sotto-requisiti si avranno più
+numeri, assegnati in ordine crescente, separati da un punto. Il numero sarà sempre composto da due cifre, per cui, ad esempio, il numero 1 sarà indicato come 01.
+Di seguito sono riportati gli elenchi, per ogni requisito individuato, riportano le seguenti
+informazioni:
+\begin{itemize}
+\item codice di identificazione univoco;
+\item breve descrizione.
+\end{itemize}
+\subsection{Requisiti funzionali}
+\subsubsection{Obbligatori}
+\begin{itemize}
+\item \textbf{FOB01}: l'utente è in grado di visualizzare il grafico che permetterà l'analisi dell'efficienza di una query e della struttura del database;
+\item \textbf{FOB02}: l'utente è in grado di visualizzare informazioni aggiuntive sulla singola operazione svolta dal database.
+\end{itemize}
+\subsubsection{Desiderabili}
+\begin{itemize}
+\item \textbf{FDE01}: l'utente è in grado di manipolare la struttura, in dettaglio:
+	\begin{itemize}
+	\item \textbf{FDE01.1}: l'utente può spostare un nodo dell'albero;
+	\item \textbf{FDE01.2}: l'utente può spostare un sotto-albero;
+	\item \textbf{FDE01.3}: l'utente può comprimere un sotto-albero.
+	\end{itemize}
+\end{itemize}
+\subsubsection{Opzionali}
+\begin{itemize}
+\item \textbf{FOP01}: l'utente è in grado di visualizzare una tabella con le statistiche sul numero di operazioni catalogate per giudizio.
+\end{itemize}
+\subsection{Requisiti prestazionali}
+\subsubsection{Obbligatori}
+\begin{itemize}
+\item \textbf{POB01:} l'interfaccia risulta efficiente e non richiede al browser un elevato carico.
+\end{itemize}
+\subsection{Requisiti di qualità}
+\subsubsection{Obbligatori}
+\begin{itemize}
+\item \textbf{QOB01}: l'interfaccia è chiara e facile da utilizzare;
+\item \textbf{QOB02}: Ogni funzione è chiaramente identificata.
+\end{itemize}
+\subsection{Requisiti di vincolo}
+\subsubsection{Obbligatori}
+\begin{itemize}
+\item \textbf{VOB01}: l'interfaccia sarà creata con le tecnologie \textit{javascript}, \textit{XHTML}\ e \textit{HTML5}\ e l'utilizzo della libreria \textit{Raphael}
+\item \textbf{VOB02}: l'interfaccia sarà utilizzabile dai browser:
+\begin{itemize}
+\item Firefox versione 7.0 o superiore;
+\item Internet Explorer versione 8.0 o superiore;
+\item Opera versione 11.0 o superiore;
+\item Chrome versione 14.0 o superiore;
+\item Safari versione 5.0 o superiore.
+\end{itemize}
+\end{itemize}
+\newpage
+\section{Tabella tracciamento requisiti funzionali - Diagramma Use Case}
+	\begin{table}[H]
+			\centering
+			\newcolumntype{R}{>{\centering}X}
+			\begin{tabularx}{\textwidth}{|R|c|}
+			\hline
+			\textbf{Requisito funzionale software} & \textbf{Use Case} \\
+			\hline
+			FOB01, FOB02, FDE01, FOP01  & UC1 \\
+			FDE01.1, FDE01.2, FDE01.3  & UC1.2 \\
+			\hline
+			\end{tabularx}
+			\caption{Tracciamento dei requisiti}
+			\label{T01}
+	\end{table}

@@ -1,0 +1,38 @@
+%Questo file definisce delle shortcut per inserire con agilità delle parole o funzioni utili. Ad esempio per inserire la parola Funzionale nel documento basta scrivere \F
+
+% comando per inserire il pedice per un vocabolo in glossario
+\newcommand{\GL}{\ped{[g]}} 
+
+%comando per inserire link colorato.
+\newcommand{\LINK}[1]{\color{blue}\url{#1}\color{black}}
+
+
+%comando per gestire immagini 
+% 1 = path , 2 = didascalia, 3 = riferimento rapido (convenzione fig:nome mnemonico e chiaramente identificativo ... esempio se è il disegno della descrizione del cloud computing si può scrivere fig:cloud ), 4= larghezza figura in mm 
+% per richiamare la figura secondo il numero \figurename~\ref{riferimento rapido}
+\newcommand{\FIGURA}[4]{
+	\begin{figure}[H]
+	\centering
+	\includegraphics[width=#4 mm, keepaspectratio]{#1}
+	\caption{#2}\label{#3}
+	\end{figure}
+}
+%ATTENZIONE: per gestire le didascalie delle tabelle bisonga utilizzare i comandi
+% /caption{Descrizione tabella}
+% /label{Nome breve} % anche qui il formato del nome breve deve seguire la conv tab:nome mnemonico e chiaramente identificativo
+
+
+%Le label si possono attaccare a tutto e ci possiamo riferire con questo
+%uso \RIF{nome etichetta}
+\newcommand{\RIF}[1]
+{\color{BlueViolet}\ref{#1}\color{black}\ a pagina \color{BlueViolet}\pageref{#1}\color{black}}
+
+
+%parole sillabate male
+\hyphenation{ri-chie-sta}
+\hyphenation{si-ste-ma}
+\hyphenation{se-gna-lan-te}
+\hyphenation{se-gna-la-zio-ne}
+\hyphenation{se-gna-la-zio-ni}
+\hyphenation{sta-ti-sti-che}
+\hyphenation{vi-sua-liz-za-to}
