@@ -98,6 +98,9 @@ function prepareCanvas() {
 		clickY= new Array();
 		clickDrag = new Array();
 		
+		timeD = new Array();
+		outputD = " ";
+		
 		clearCanvas();
 		
 	})
