@@ -11,7 +11,7 @@ var clickX = new Array();
 var clickY = new Array();
 var clickDrag = new Array();
 var timeD = new Array();
-var outputD;
+var numReg = 0;
 var paint = false;
 var startTime;
 var endTime;
@@ -63,6 +63,7 @@ function prepareCanvas() {
 			addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);	
 			
 			timeD.push(new Date());
+			numReg++;
 					
 			redraw();
 						
@@ -77,17 +78,14 @@ function prepareCanvas() {
 	$('#canvas').mouseup(function(e){
 	
 	
-		endTime = new Date();
-		alert(endTime);
-		alert(startTime);
-		var timeSpent = (endTime - startTime);
-		alert(timeSpent);
-		alert(outputD);
-		
-		
-	
 		paint = false;
 		redraw();
+	
+		endTime = new Date();
+		console.log(endTime.getSeconds() , endTime.getMilliseconds());
+		console.log(startTime.getSeconds() , startTime.getMilliseconds());
+		var timeSpent = (endTime - startTime);
+		console.log(timeSpent);		
 			
 	});
 
@@ -112,6 +110,14 @@ function prepareCanvas() {
 		
 		paint = false;
 						
+/*		redraw();
+						
+		endTime = new Date();
+		console.log(endTime.getSeconds() , endTime.getMilliseconds());
+		console.log(startTime.getSeconds() , startTime.getMilliseconds());
+		var timeSpent = (endTime - startTime);
+		console.log(timeSpent);
+*/						
 	});
 }
 
@@ -162,11 +168,14 @@ function redraw(){
 		
 	}
 	
+/*
+
+	prende il corretto numero di timestamp!
 	
 	for (var i = 0; i < timeD.length; i++){
 		
-		outputD = outputD + "Tempo " + i + timeD[i] + "\n ";
+		outputD = outputD + "Tempo " + i + timeD[i] + " N reg = " + numReg + "\n ";
 		
 	}
-	
+*/	
 }
