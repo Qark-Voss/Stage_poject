@@ -92,6 +92,17 @@ function prepareCanvas() {
 	});
 
 
+	$('#clear_canv').mousedown(function(e){
+		
+		clickX= new Array();
+		clickY= new Array();
+		clickDrag = new Array();
+		
+		clearCanvas();
+		
+	})
+
+
 	// If the mouse goes out of the paper the paint variable is set on false
 
 	$('#canvas').mouseleave(function(e){
@@ -111,9 +122,21 @@ function addClick(x, y, dragging){
 }
 
 
+// Clear the canvas
+
+function clearCanvas(){
+	
+	context.fillStyle = '#ffffff';
+	context.fillRect(0, 0, canvasWidth, canvasHeight);
+	
+	canvas.width = canvas.width;
+	
+	
+}
+
 function redraw(){
 	
-	canvas.width = canvas.width; // Clear the canvas
+	clearCanvas();
 	
 	context.strokeStyle = "blue";
 	context.lineJoin = "round";
