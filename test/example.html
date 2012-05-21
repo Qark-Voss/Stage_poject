@@ -4,9 +4,14 @@
 	<head>
 		
 		<title>Testing a drawing app</title>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+		<script type="text/javascript" src="javascript/jquery-1.7.2.js"></script>
+		<script type="text/javascript" src="javascript/jquery-1.7.2.min.js"></script>
 		
-		<script type="text/javascript" src="example.js"></script>
+		<script type="text/javascript" src="example_2.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		
+		
 		
 	</head>
 	
@@ -19,7 +24,15 @@
 			
 			Clear canvas: 
 			
-			<button id="clear_canv" type="button"> Clear </button>
+			<button id="clear_canv" type="button" > Clear </button>
+			<br /><br />
+			
+			Change color: 
+			<button id="purple_b" type="button"> Purple </button>
+			
+			<button id="black_b" type="button"> Black </button>
+			
+			
 			
 		</p>
 		<div id="canvasDiv">
@@ -27,12 +40,11 @@
 		</div>
 		
 	
-		<script type="text/javascript"> $(document).ready(function() {
-				
-				prepareCanvas();
-				
-			});
-		</script>
+	
+	
+		
+		
+		
 		
 	</body>
 	

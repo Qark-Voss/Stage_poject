@@ -110,7 +110,10 @@ function prepareCanvas() {
 		
 		paint = false;
 						
-/*		redraw();
+/*		
+		Quando sono fuori calcolo comunque il tempo che passa?
+		
+		redraw();
 						
 		endTime = new Date();
 		console.log(endTime.getSeconds() , endTime.getMilliseconds());
