@@ -2,7 +2,7 @@
 var canvasWidth = 500;
 var canvasHeight = 500;
 var curCol = "red";
-var lineW = 3;
+var lineW = 5;
 var lineStyle = "round";
     
 var CanvasDrawr = function(options) {
@@ -12,6 +12,9 @@ var CanvasDrawr = function(options) {
 	var purpleColor = document.getElementById('purple_b');
 	var blackColor = document.getElementById('black_b');
 	var canvas = document.createElement('canvas');
+	var sizeSmall = document.getElementById('small');
+	var sizeMedium = document.getElementById('medium');
+	var sizeBig = document.getElementById('big');
 	canvasDiv.appendChild(canvas);
 	
 	if(typeof G_vmlCanvasManager != 'undefined') {
@@ -45,6 +48,9 @@ var CanvasDrawr = function(options) {
 			clearButton.addEventListener('mousedown' , self.clearCanvas, false);
             purpleColor.addEventListener('mousedown' , self.purpleColor, false);
 			blackColor.addEventListener('mousedown', self.purpleColor, false);
+			sizeSmall.addEventListener('mousedown', self.changeSize, false);
+			sizeMedium.addEventListener('mousedown', self.changeSize, false);
+			sizeBig.addEventListener('mousedown', self.changeSize, false);
             
         },
 
@@ -95,8 +101,13 @@ var CanvasDrawr = function(options) {
 			
 			ctxt.fillStyle = '#ffffff';
 			ctxt.fillRect(0, 0, canvasWidth, canvasHeight);
-			
+						
 			canvas.width = canvas.width;
+
+			ctxt.lineWidth = lineW;
+			
+			ctxt.lineCap = lineStyle;
+		    
 
 		},
 		
@@ -107,12 +118,45 @@ var CanvasDrawr = function(options) {
 				
 				curCol = "purple";
 				
-			}else{
-				if(this.id=='black_b')
+			}
+			
+			if(this.id=='black_b'){
 				curCol = 'black';
 			}
 			
 		},
+		
+		
+		changeSize: function(event){
+			
+			if(this.id == 'small'){
+				
+				lineW = 5;
+				
+				ctxt.lineWidth = lineW;
+				
+			}
+			
+			if(this.id == 'medium'){
+					
+					lineW = 15;
+					
+					ctxt.lineWidth = lineW;
+					
+			}
+				
+			if(this.id == 'big'){
+						
+					lineW = 25;
+						
+					ctxt.lineWidth = lineW;
+						
+			}
+					
+				
+			
+		}
+		
 
     };
 
@@ -125,5 +169,5 @@ var CanvasDrawr = function(options) {
 
 
 $(function(){
-  var start = new CanvasDrawr({id:"example", size: 15}); 
+  var start = new CanvasDrawr({id:"example"}); 
 });
