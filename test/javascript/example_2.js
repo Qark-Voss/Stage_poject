@@ -1,6 +1,5 @@
-
-var canvasWidth = 500;
-var canvasHeight = 500;
+var canvasWidth = 800;
+var canvasHeight = 400;
 var curCol = "red";
 var precEraser = "red";
 var lineW = 1;

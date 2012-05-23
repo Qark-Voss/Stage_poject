@@ -1,3 +1,9 @@
+/*Reset*/
+
+canvas, div, body {margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
+
+/*Reset*/
+
 /*Typography*/
 
 html {font-size: 100%;}
@@ -10,9 +16,50 @@ h5 {font-size:1em;font-weight:bold;margin-bottom:1.5em;}
 h6 {font-size:1em;font-weight:bold;}
 
 /*Typhography*/
-canvas{
+
+
+/*Grid*/
+
+.container {
 	
-	border-style: solid;
-	border-width: 1px;
+	width:950px; 
+	margin:0 auto;
 	
 }
+
+canvas, .span-sidebar, .span-full {
+	
+	float:left;
+	margin-right:10px;
+	
+}
+
+
+
+canvas {
+	
+	width: 800px;
+	height: 400px;
+	border-style: solid;
+	border-width: 1px;
+	background: #fff;
+	
+}
+
+.span-sidebar {
+	
+	background: #C0FABE;
+	width: 120px;
+	
+}
+
+.span-full {
+	
+	background: #C0FABE;
+	width: 950px;
+	margin-right: 0;
+	
+}
+
+
+/*Grid*/
