@@ -1,7 +1,8 @@
+// Variables connected to the canvas
 var canvasWidth = 750;
 var canvasHeight = 400;
-var curCol = "red";
-var precEraser = "red";
+var curCol = "black";
+var precEraser = "black";
 var lineW = 2;
 var lineStyle = "round";
 var img = new Image();
@@ -13,14 +14,17 @@ var curY = 0;
 //var id_d = new Array();
 var idM = 0;
 var paint;
-var	pathB = 'img/background.jpg';
 var bg = new Image();
-bg.src = pathB;
+var record = new Array();
+var precRecord = new Array();
+var pages = new Array();
+var curPage = 0;
 
 
     
 var CanvasDrawr = function(options) {
 
+	
 	var cont = document.getElementById('starships')
     var canvasDiv = document.getElementById('canvasDiv'); // I'm importing the canvasDiv
 	var clearButton = document.getElementById('clear_canv'); // I'm getting the clear_canv button
@@ -49,11 +53,19 @@ var CanvasDrawr = function(options) {
 	var sizeFive = document.getElementById('five');
 	var sizeSix = document.getElementById('six');
 	
+	var reDo = document.getElementById('reDo_button');
+	var unDo = document.getElementById('unDo_button');
+	// var restore = document.getElementById('restore_button');
+	var prec = document.getElementById('prec_button');
+	var suc = document.getElementById('suc_button');
+	
+	
 	// Getting the button to load images
 	var loadImg = document.getElementById('load');
 	
 	// Creating a new element for teh HTML page: canvas
 	var canvas = document.createElement('canvas');
+	
 	
 	// Appending to the HTML file the new element
 	canvasDiv.appendChild(canvas);
@@ -80,28 +92,74 @@ var CanvasDrawr = function(options) {
 
 	// Define the array of value: lines is an array with 3 records for each row
     var lines = [,,];
-    var offset = $(canvas).offset();
 
     var self = {
 	
 
-	
         init: function() {
+
+
+			// Code for the image upload - BEGIN//
+			var loadImageFile = (function(){
+
+				if(window.FileReader) {
+					var prevImg = null, fReader = new window.FileReader(),
+					rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
+					
+					fReader.onload = function (e){
+
+						self.loadNewImg(e.target.result);
+						
+
+					}
+
+					return function(){
+						var pict = document.getElementById("load").files;
+						if(pict.length === 0 ){return;}
+						if(!rFilter.test(pict[0].type)){
+							alert("you must select a valid image file.");
+							return;
+						}
+						
+						fReader.readAsDataURL(pict[0]);
+					}
+
+				}
+
+			})();
+			
+			window.onload = function(){
+				document.getElementById("load").addEventListener("change", function(){
+					if(this.value != ""){
+						loadImageFile();
+					}
+				}, false);
+			};
+			// Code for the image upload - END//			
+			
+			
+			// Appends the touch listeners to the canvas for the drawing operations
             canvas.addEventListener('touchstart', self.preDraw, false);
             canvas.addEventListener('touchmove', self.draw, false);
-			//canvas.addEventListener('touchend', self.timer, false);
-			
-			// I Define the listener to the mouse events
+			//canvas.addEventListener('touchend', self.timer, false);			
 			canvas.addEventListener('touchmove', self.position, false);
+			
+			// Appends the mouse listener to the canvas for the drawing operations
 			canvas.addEventListener('mousemove', self.drawM, false);
 			canvas.addEventListener('mouseup', self.stopDrawM, false);
 			canvas.addEventListener('mouseout', self.stopDrawM, false);
+			canvas.addEventListener('mousedown', self.preDrawM, false);
 			
-			canvas.addEventListener('mousedown', self.preDrawM, false)
 			
+			// Appends the mouse listener to the various buttons of the toolbar
+			
+			//Clear button
 			clearButton.addEventListener('mousedown' , self.clearCanvas, false);
+			
+			//Save button
 			saveButton.addEventListener('mousedown' , self.saveCanvas, false);
 			
+			//Colors buttons
             blueColor.addEventListener('mousedown' , self.changeColor, false);
 			blackColor.addEventListener('mousedown', self.changeColor, false);
 			orangeColor.addEventListener('mousedown' , self.changeColor, false);
@@ -112,6 +170,15 @@ var CanvasDrawr = function(options) {
 			greyColor.addEventListener('mousedown', self.changeColor, false);
 			brownColor.addEventListener('mousedown' , self.changeColor, false);
 			
+			reDo.addEventListener('mousedown' , self.reDo, false);
+			unDo.addEventListener('mousedown' , self.unDoLine, false);
+			// restore.addEventListener('mousedown' , self.reDraw, false);
+			
+			prec.addEventListener('mousedown', self.precPage, false);
+			suc.addEventListener('mousedown', self.sucPage, false);
+			
+			
+			//Sizes buttons
 			sizeOne.addEventListener('mousedown', self.changeSize, false);
 			sizeTwo.addEventListener('mousedown', self.changeSize, false);
 			sizeThree.addEventListener('mousedown', self.changeSize, false);
@@ -119,35 +186,43 @@ var CanvasDrawr = function(options) {
 			sizeFive.addEventListener('mousedown', self.changeSize, false);
 			sizeSix.addEventListener('mousedown', self.changeSize, false);
 			
+			//Tools buttons
 			pencilTool.addEventListener('mousedown', self.selectTool, false);
 			eraserTool.addEventListener('mousedown', self.selectTool, false);
-			loadImg.addEventListener('mousedown', self.loadNewImg, false);
+			//loadImg.addEventListener('mousedown', self.loadNewImg, false);
+			
+			
 			
             
         },
 
-		//I start to prepare the drawing operation when the event 'touchstart' starts
+		//Starts to prepare the drawing operation when the event 'touchstart' starts
         preDraw: function(event) {
 
-
+			// Coordinates for calculate the offset of the object that contents the canvas
 			var posLeft = this.offsetLeft;
 			var posTop = this.offsetTop;
-			
 
             $.each(event.touches, function(i, touch) {
               
-
 				// I take the identifier of a certain touch event to identify the touch line
                 var id = touch.identifier; // This functions is used to make unique a certaint draw and to permit multidraw!
-
+				idM++	
 				// id_d.push(id); // I thake the ID of a touch line and record it in an array
                 lines[id] = { x : this.pageX - posLeft , 
                               y : this.pageY - posTop , 
                               color : curCol
                            	};
 
-							console.log(this.pageX + " !-! " + this.pageY);
-							console.log(id);
+							var curData = new Array;
+							
+							curData[0] = {id : idM, x : (this.pageX - posLeft), y : (this.pageY - posTop), color : curCol, size : lineW, time: new Date()};
+							
+							console.log((this.pageX - posLeft) + " = " + this.pageX);
+							
+							record.push(curData);
+							
+							self.copyArray();
 
 				});
 
@@ -155,9 +230,10 @@ var CanvasDrawr = function(options) {
         },
 
 
-		//This operation start to draw the lines when i execute a touch operation on the touchscreen
+		//This operation starts to thake the coordinates of the touch mooves and call the "move" function that draw the lines
         draw: function(event) {
 
+			// Coordinates for calculate the offset of the object that contents the canvas
 			var posLeft = this.offsetLeft;
 			var posTop = this.offsetTop;
 
@@ -171,9 +247,14 @@ var CanvasDrawr = function(options) {
                 lines[id].x = ret.x;
                 lines[id].y = ret.y;
 								
-				//console.log(this.pageX + " - " + this.pageY);
-								
-				//console.log(id_d[0]);// i check the ID of the touch line
+				var curData = new Array;
+				
+				curData[0] = {id : idM, x : lines[id].x, y : lines[id].y, color : curCol, size : lineW, time: new Date()};
+				
+				record.push(curData);
+				
+				precRecord.push(curData);
+				
 
             });
 
@@ -186,6 +267,13 @@ var CanvasDrawr = function(options) {
             ctxt.beginPath();
             ctxt.moveTo(lines[i].x, lines[i].y);
 
+
+			var controlPointX = (lines[i].x + (lines[i].x+changeX)) / 2;
+			var controlPointY = ((lines[i].y + (lines[i].y+changeY)) / 2);
+			
+
+			//ctxt.quadraticCurveTo(controlPointX, controlPointY,lines[i].x + changeX, lines[i].y + changeY);
+			
             ctxt.lineTo(lines[i].x + changeX, lines[i].y + changeY);
             ctxt.stroke();
             ctxt.closePath();
@@ -194,9 +282,189 @@ var CanvasDrawr = function(options) {
         },
 
 
+		unDoLine: function(event){
+			
+			var posLeft = this.offsetLeft;
+			var posTop = this.offsetTop;
+			
+			self.clearCanvas();
+			
+			for(i = 0; i < record.length; i++){
+															
+				console.log(record[i][0].id + " è uguale a " + idM);
+										
+				if((record[i][0].id == record[i+1][0].id) && (record[i][0].id != idM)){
+										
+					ctxt.strokeStyle = record[i][0].color;
+					ctxt.lineWidth = record[i][0].size;
+					ctxt.beginPath();
+					ctxt.moveTo(record[i][0].x, record[i][0].y);
+					ctxt.lineTo( record[i+1][0].x,  record[i+1][0].y);
+					ctxt.stroke();
+					ctxt.closePath();
+										
+				}
+				
+				
+				if(record[i][0].id == idM){
+				
+				console.log("Eliminazione?");
+				
+				var numbers = record.length - i;
+				
+				record.splice(i,numbers);
+								
+				}
+				
+			}
+						
+			
+		},
+
+		reDo: function(event){
+			
+			var posLeft = this.offsetLeft;
+			var posTop = this.offsetTop;
+			
+			console.log(precRecord.length + " - " + record.length);
+			
+			if(precRecord.length > record.length){
+			
+				self.clearCanvas();
+				
+				for(i = 0; i < precRecord.length; i++){
+															
+																				
+					if(typeof(precRecord[i+1])!="undefined" && (precRecord[i][0].id == precRecord[i+1][0].id)){
+										
+						ctxt.strokeStyle = precRecord[i][0].color;
+						ctxt.lineWidth = precRecord[i][0].size;
+						ctxt.beginPath();
+						ctxt.moveTo(precRecord[i][0].x, precRecord[i][0].y);
+						ctxt.lineTo( precRecord[i+1][0].x,  precRecord[i+1][0].y);
+						ctxt.stroke();
+						ctxt.closePath();
+										
+					}
+				
+				}
+				
+				self.copyArray2();
+				
+			}	
+					
+			
+		},
+		
+		copyArrayPro: function(first, second){
+			
+			second = new Array();
+			
+			for(i = 0; i < first.length; i++){
+				
+				second.push(first[i]);
+				
+			}
+			
+		},
+		
+		copyArray: function(event){
+			
+			
+			precRecord = new Array();
+			
+			for(i = 0; i < record.length; i++){
+				
+				precRecord.push(record[i]);
+				
+			}
+		},
+			
+		copyArray2: function(event){
+
+			console.log("copiato");
+			
+			record = new Array();
+
+			for(i = 0; i < precRecord.length; i++){
+
+				record.push(precRecord[i]);
+
+			}
+		
+		},
+
+		// reDraw: function(event){
+		// 			
+		// 			var posLeft = this.offsetLeft;
+		// 			var posTop = this.offsetTop;
+		// 					
+		// 			var i = 0;
+		// 						
+		// 			while(i<precRecord.length){
+		// 													
+		// 				if(typeof(precRecord[i+1])!="undefined" && precRecord[i][0].id == precRecord[i+1][0].id){
+		// 										
+		// 					ctxt.strokeStyle = precRecord[i][0].color;
+		// 					ctxt.lineWidth = precRecord[i][0].size;
+		// 					ctxt.beginPath();
+		// 					ctxt.moveTo(precRecord[i][0].x, precRecord[i][0].y);
+		// 					
+		// 					if(typeof(precRecord[i+2])!="undefined" || precRecord[i][0].id == precRecord[i+2][0].id){
+		// 						ctxt.quadraticCurveTo(precRecord[i+1][0].x,precRecord[i+1][0].y,precRecord[i+2][0].x, precRecord[i+2][0].y);
+		// 						i = i + 2;				
+		// 						
+		// 					}else{
+		// 						
+		// 						ctxt.lineTo( precRecord[i+1][0].x,  precRecord[i+1][0].y);
+		// 						i = i+1;
+		// 						
+		// 					}
+		// 					ctxt.stroke();
+		// 					ctxt.closePath();
+		// 									
+		// 				}
+		// 				
+		// 				if(typeof(precRecord[i+1])=="undefined"){i++;}
+		// 				
+		// 				
+		// 			} 
+		// 			
+		// 		},
+		
+		
+		reDraw: function(event){
+							
+			var posLeft = this.offsetLeft;
+			var posTop = this.offsetTop;
+			
+			for(i = 0; i < record.length; i++){
+					
+				//console.log(record[i][0].id + " - " + record[i+1][0].id);
+										
+				if(typeof(precRecord[i+1])!="undefined" && record[i][0].id == record[i+1][0].id){
+										
+					ctxt.strokeStyle = record[i][0].color;
+					ctxt.lineWidth = record[i][0].size;
+					ctxt.beginPath();
+					ctxt.moveTo(record[i][0].x, record[i][0].y);
+					ctxt.lineTo( record[i+1][0].x,  record[i+1][0].y);
+					ctxt.stroke();
+					ctxt.closePath();
+					
+					lineW = record[i][0].size;
+									
+				}					
+				
+			} 
+			
+		},
+		
+
+		//Starts to prepare the drawing operation when the event 'touchstart' starts
 		preDrawM: function(event) {
 
-				
+				//Variable that define the id of a certaint mouse event
 				idM++;
 				
 				paint = true;
@@ -206,12 +474,19 @@ var CanvasDrawr = function(options) {
                               color : curCol
                            	};
 
+				var curData = new Array;
+							
+				curData[0] = {id : idM, x : event.pageX - this.offsetLeft, y : event.pageY - this.offsetTop, color : curCol, size : lineW, time: new Date()}
+							
+				record.push(curData);
+				
+				self.copyArray();
+
 			    event.preventDefault();
-				console.log(idM);
             
         },
 
-		//This operation start to draw the lines when i execute a touch operation on the touchscreen
+		//This operation starts to thake the coordinates of the mouse mooves and call the "move" function that draw the lines
         drawM: function(event) {
 
 				if (paint){
@@ -223,10 +498,15 @@ var CanvasDrawr = function(options) {
                 var ret = self.move(idM, moveX, moveY);
                 lines[idM].x = ret.x;
                 lines[idM].y = ret.y;
-								
-				//console.log(this.pageX + " - " + this.pageY);
-								
-				//console.log(id_d[0]);// i check the ID of the touch line
+				
+				var curData = new Array;
+				
+				curData[0] = {id : idM, x : lines[idM].x, y : lines[idM].y, color : curCol, size : lineW, time: new Date()};
+				
+				record.push(curData);
+				
+				precRecord.push(curData);
+				
 				}
             event.preventDefault();
         },
@@ -236,16 +516,25 @@ var CanvasDrawr = function(options) {
 			
 			paint = false;
 			
+			// for(i = 0; i < record.length; i++){
+			// 				
+			// 				console.log(record[i][0].id + " - " + record[i][0].color + " - " + record[i][0].size + " - " + record[i][0].x + " - " + record[i][0].y);
+			// 				
+			// 			}
+			
 		},
 
-		//This is the real operation that draw the line
-
+		
+		// Function that shows the touch event position
 		position: function(event) {
+			
+		   	var posLeft = this.offsetLeft;
+			var posTop = this.offsetTop;
 			
 			 $.each(event.touches, function(i, touch) {
 				
-				curX = this.pageX - offset.left;
-				curY = this.pageY - offset.top;
+				curX = this.pageX - posLeft;
+				curY = this.pageY - posTop;
 				
 				
 			 });
@@ -265,7 +554,7 @@ var CanvasDrawr = function(options) {
 		//Function that erase the content of the canvas
 		clearCanvas: function(event){
 			
-			if(this.id == 'clear_canv'){
+			// if(this.id == 'clear_canv'){
 			
 						
 				canvas.width = canvas.width;
@@ -278,11 +567,18 @@ var CanvasDrawr = function(options) {
 				
 				ctxt.fillRect(0, 0, canvasWidth, canvasHeight);
 				
-	    	}
+				if(this.id == 'clear_canv'){
+					
+					record = new Array;
+					console.log("Cleared the array");
+					
+				}
+				
+	    	// }
 
 		},
 		
-		
+		// Function that transform the canvas area into a png image shows in to a new browser page
 		saveCanvas: function(event){
 			
 			if(this.id == 'save_canv'){
@@ -345,7 +641,8 @@ var CanvasDrawr = function(options) {
 				
 					if(this.id == 'red_b'){
 
-						curCol = "#CC0000";
+						//curCol = "#CC0000";
+						curCol = "red";
 						precEraser = curCol;
 
 
@@ -434,14 +731,137 @@ var CanvasDrawr = function(options) {
 		},
 		
 		//Function that allows to load images and put them in the background of the canvas
-		loadNewImg: function(event){
+		loadNewImg: function(file){
+			
+			var image = new Image();
+			
+			image.src = file;
+			
+			image.onload = function(){
+				
+				ctxt.drawImage(image,0,0);
+				
+				document.getElementById("load").value = "";
 							
-			var	path = 'img/keroro.jpg';
-			img.src = path;
-			ctxt.drawImage(img,50,50);
+				};
+			
+		}, 
+		
+		
+		precPage: function(){
+			
+			if(curPage>0){
+				
+				var tempRecord = new Array();
+				
+				for(i = 0; i < record.length; i++){
+
+					tempRecord.push(record[i]);
+
+				}
+								
+				pages[curPage] = tempRecord;
+								
+				self.clearCanvas();
+				
+				record = new Array();
+				
+				precRecord = new Array();
+				
+				
+				
+				for(i = 0; i < (pages[curPage-1]).length; i++){
+
+					record.push(pages[curPage-1][i]);
+					
+					precRecord.push(pages[curPage-1][i]);
+
+				}
+				
+				
+																		
+				self.reDraw();
+				
+				curPage--;
+				
+			}
+			
+			
 			
 		},
 		
+		sucPage: function(){
+			
+			if(typeof(pages[curPage])=="undefined"){
+				
+				var tempRecord = new Array();
+				
+				for(i = 0; i < record.length; i++){
+
+					tempRecord.push(record[i]);
+
+				}
+				
+				pages.push(tempRecord);
+								
+				self.clearCanvas();
+				
+				precRecord = new Array();
+								
+				record = new Array();
+								
+				curPage++;
+				
+			}else{
+				
+				var tempRecord = new Array();
+				
+				for(i = 0; i < record.length; i++){
+
+					tempRecord.push(record[i]);
+					
+				}
+				
+				pages[curPage] = tempRecord
+				
+				if(typeof(pages[curPage+1])=="undefined"){
+					
+					self.clearCanvas();
+
+					record  = new Array;
+
+					precRecord = new Array;
+
+					curPage++;
+										
+				}else{
+					
+					self.clearCanvas();
+					
+					
+					precRecord = new Array();
+					
+					record = new Array();
+					
+					for(i = 0; i < (pages[curPage+1]).length; i++){
+
+						record.push(pages[curPage+1][i]);
+						
+						precRecord.push(pages[curPage+1][i]);
+
+					}
+					
+					
+					self.reDraw();
+					
+					
+					curPage++;
+										
+				}
+				
+			}
+			
+		},
 		
 
     };

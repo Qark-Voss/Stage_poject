@@ -5,11 +5,13 @@
 
 	<head>
 		
-		<title>Testing a drawing app</title>
+		<title>Drawing app - Pre Alpha</title>
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		
 		<script type="text/javascript" src="javascript/jquery-1.7.2.min.js"></script> 				
 				
-		<script type="text/javascript" src="javascript/example_2.js"></script>
+		<script type="text/javascript" src="javascript/example_2.js"></script>		
 		
 		<link rel="stylesheet" type="text/css" href="css/screen.css">
 		
@@ -24,10 +26,12 @@
 			
 			<div id="center_body" class="span-full">
 				
-				<p>Nuovo file</p>
+				<div class="left_label"></div>
+				
+				<h1>Drawing App</h1>
 				
 				<div id="canvasDiv" class="span-canvas">
-				</div>
+				</div> 
 				
 			</div>
 			
@@ -169,20 +173,69 @@
 						<!--	<input type="file" src="css/icon_set/load_img.png" id="load"></input>
 						 </input> -->
 								
-								<input type="image" src="css/icon_set/load_img.png" id="load">
+								<input type="file" id="load" name="load"></input>
+								
+								<div id="fakebutton">
+									<img src="css/icon_set/load_img.png"> </img>
+								</div>
 								
 							</ul></li>
 							Load image
 						</div>
 					</div>
+					
+					<div class="span-spec">
+						<div id="unDo">
+							<ul><li>
+						
+							<input type="image" src="css/icon_set/undo.png" id="unDo_button"></input>
+						</ul></li>
+							Undo
+						</div>
+					</div>
+					
+					<div class="span-spec">
+						<div id="reDo">
+							<ul><li>
+							
+							<input type="image" src="css/icon_set/redo.png"id="reDo_button"></input>
+							
+							</ul></li>
+							
+							Redo
+						</div>
+					</div>
+					
+					<!-- 					<div class="span-spec">
+											<div id="restore">
+												<input type="button" id="restore_button" value="Restore"></input>
+											</div>
+										</div> -->
 				
+					<div class="span-spec">
+						<div id="precedent">
+	
+
+							<input type="button" value="<==" id="prec_button"></input>
+			
+						</div>
+					</div>
+
+					<div class="span-spec">
+						<div id="sucessive">
+
+							<input type="button" value="==>" id="suc_button"></input>
+
+						</div>
+					</div>
 				
 				</div>
 				
 			</div>
 			
 			<div id="footer" class="span-footer">
-					footer
+					Studente: Quadrio Giacomo <br />
+					Matricola: 598571<br />
 			</div>
 		
 		</div>
