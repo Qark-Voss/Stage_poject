@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript">
+       var WIDTH = 400;
+       var HEIGHT = 450;
+        var X = 50;
+        var Y = 50;
+        var dx = 1;
+        var dy = 1;
+        var context;
+ 
+        function init() {
+            var drawingCanvas = document.getElementById('drawing');
+            // Check the element is in the DOM and the browser supports canvas
+            if (drawingCanvas.getContext) {
+                context = drawingCanvas.getContext('2d');
+                setInterval("draw()", 5);
+            }
+        }
+ 
+        function draw() {
+            context.clearRect(0, 0, WIDTH,HEIGHT);
+            context.beginPath();
+            context.lineCap = "round";
+            context.lineWidth = 8;
+            context.strokeStyle = "red";
+            context.fillStyle = "red";
+            context.moveTo(X, Y);
+            context.quadraticCurveTo(X + 10, Y + 50, X + 75, Y + 100);
+            context.quadraticCurveTo(X + 140, Y + 50, X + 150, Y);
+            context.quadraticCurveTo(X + 112.5, Y - 50, X + 75, Y);
+            context.quadraticCurveTo(X + 37.5, Y - 50, X, Y);
+            context.stroke();
+            context.fill();
+            if (X + 150 + dx >= WIDTH || X + dx <= 0)
+                dx = -dx;
+            if (Y+ 100 + dy >= HEIGHT || Y + dy <= 0)
+                dy = -dy;
+ 
+            X += dx;
+            Y += dy;
+        }
+    </script>
+</head>
+<body onload="init()">
+<canvas style="border:solid 1px black" id="drawing" width="400" height="450">
+</canvas>
+</body>
+</html>
