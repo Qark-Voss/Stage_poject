@@ -1,0 +1,161 @@
+format 67
+
+subject 128396 ""
+  xyzwh 88 20 2000 616 757
+classcanvas 128524 class_ref 134540 // Utente
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 14 122 2000
+end
+usecasecanvas 128652 usecase_ref 134540 // UC1.1
+  xyzwh 104 45 3005 156 72 label_xy 165 56
+end
+textcanvas 128780 "Disegno su canvas"
+  xyzwh 132 77 3010 112 14
+usecasecanvas 128908 usecase_ref 134668 // UC1.2
+  xyzwh 334 31 3005 153 91 label_xy 382 38
+end
+textcanvas 129036 "Touchevent sull'area 
+di disegno del canvas
+"
+  xyzwh 350 63 3010 243 59
+textcanvas 129292 "<<include>>"
+  xyzwh 256 58 3011 73 14
+usecasecanvas 129420 usecase_ref 134796 // UC1.3
+  xyzwh 533 37 3015 158 78 label_xy 600 48
+end
+textcanvas 129548 "Registrazione info 
+punti disegnati"
+  xyzwh 567 62 3020 104 28
+textcanvas 129804 "<<include>>"
+  xyzwh 481 110 3021 66 14
+usecasecanvas 130188 usecase_ref 134924 // UC1.4
+  xyzwh 178 116 3005 142 72 label_xy 227 134
+end
+textcanvas 130316 "Seleziona strumento
+"
+  xyzwh 193 150 3010 114 14
+usecasecanvas 130828 usecase_ref 135052 // UC1.5
+  xyzwh 319 166 3005 137 68 label_xy 364 178
+end
+textcanvas 130956 "Seleziona dimensione
+"
+  xyzwh 328 193 3010 123 14
+usecasecanvas 131468 usecase_ref 135180 // UC 1.6
+  xyzwh 257 234 3005 133 60 label_xy 301 246
+end
+textcanvas 131596 "Seleziona colore"
+  xyzwh 277 257 3010 92 14
+usecasecanvas 131852 usecase_ref 135308 // UC 1.7
+  xyzwh 320 291 3005 130 72 label_xy 364 300
+end
+textcanvas 131980 "Importa
+immagine
+"
+  xyzwh 361 318 3010 53 28
+usecasecanvas 132236 usecase_ref 135436 // UC 1.8
+  xyzwh 191 331 3005 124 72 label_xy 234 341
+end
+textcanvas 132364 "Operazione di undo
+"
+  xyzwh 196 359 3010 112 14
+usecasecanvas 132492 usecase_ref 135564 // UC 1.9
+  xyzwh 420 377 3005 144 71 label_xy 465 389
+end
+textcanvas 132620 "Modifica array
+tratti
+"
+  xyzwh 453 406 3010 92 28
+textcanvas 132876 "<<include>>"
+  xyzwh 312 393 3011 66 14
+usecasecanvas 133004 usecase_ref 135692 // UC 1.10
+  xyzwh 187 410 3005 112 69 label_xy 214 422
+end
+textcanvas 133132 "Operazione 
+di redo"
+  xyzwh 206 438 3010 93 27
+textcanvas 133516 "<<include>>
+"
+  xyzwh 334 444 2005 66 14
+usecasecanvas 133644 usecase_ref 135820 // UC 1.11
+  xyzwh 183 493 3005 108 64 label_xy 211 505
+end
+textcanvas 133772 "Cambio pagina
+"
+  xyzwh 193 520 3010 89 14
+usecasecanvas 134412 usecase_ref 135948 // UC 1.12 
+  xyzwh 180 563 3005 112 80 label_xy 210 575
+end
+textcanvas 134540 "Operazione di 
+salvataggio"
+  xyzwh 200 589 3010 84 28
+usecasecanvas 134668 usecase_ref 136076 // UC 1.13
+  xyzwh 368 553 3005 134 85 label_xy 408 566
+end
+textcanvas 134796 "Registrazione su file
+array informazioni
+"
+  xyzwh 382 585 3010 113 28
+textcanvas 135052 "<<include>>
+"
+  xyzwh 403 572 2005 66 14
+textcanvas 135180 "<<include>>
+"
+  xyzwh 403 572 2005 66 14
+textcanvas 135308 "<<include>>
+"
+  xyzwh 297 578 3011 66 14
+usecasecanvas 135564 usecase_ref 136204 // UC 1.14
+  xyzwh 135 664 3005 142 87 label_xy 164 678
+end
+textcanvas 135692 "Operazione apertura
+file salvato"
+  xyzwh 149 696 3010 118 28
+usecasecanvas 135820 usecase_ref 136332 // UC 1.15
+  xyzwh 337 676 3005 136 77 label_xy 378 684
+end
+textcanvas 135948 "Definizione array
+informazione"
+  xyzwh 361 701 3010 94 28
+textcanvas 136204 "<<include>>
+"
+  xyzwh 271 677 3011 66 14
+simplerelationcanvas 129164 simplerelation_ref 134540
+  from ref 128652 z 3006 to ref 128908
+end
+simplerelationcanvas 129676 simplerelation_ref 134668
+  from ref 128908 z 3016 to ref 129420
+end
+line 130060 ----
+  from ref 128524 z 3006 to ref 128652
+line 130700 ----
+  from ref 130188 z 3006 to ref 128524
+line 131340 ----
+  from ref 130828 z 3006 to ref 128524
+line 131724 ----
+  from ref 131468 z 3006 to ref 128524
+line 132108 ----
+  from ref 131852 z 3006 to ref 128524
+simplerelationcanvas 132748 simplerelation_ref 134796
+  from ref 132236 z 3006 to ref 132492
+end
+simplerelationcanvas 133388 simplerelation_ref 134924
+  decenter_end 605
+  from ref 133004 z 3006 to ref 132492
+end
+line 133900 ----
+  from ref 128524 z 3006 to ref 132236
+line 134156 ----
+  from ref 128524 z 3006 to ref 133644
+line 134284 ----
+  from ref 133004 z 3006 to ref 128524
+simplerelationcanvas 134924 simplerelation_ref 135052
+  from ref 134412 z 3006 to ref 134668
+end
+line 135436 ----
+  from ref 134412 z 3006 to ref 128524
+simplerelationcanvas 136076 simplerelation_ref 135180
+  from ref 135564 z 3006 to ref 135820
+end
+line 136332 ----
+  from ref 135564 z 3006 to ref 128524
+end
