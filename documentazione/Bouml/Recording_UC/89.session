@@ -1,0 +1,11 @@
+window_sizes 1278 896 320 952 698 120
+diagrams
+  active  usecasediagram_ref 128217 // Recording Schema
+    939 610 100 4 0 0
+end
+show_stereotypes
+selected usecasediagram_ref 128217 // Recording Schema
+open
+  usecaseview_ref 128217 // Recording Schema
+end
+end
