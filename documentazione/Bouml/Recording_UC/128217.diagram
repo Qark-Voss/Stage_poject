@@ -1,0 +1,81 @@
+format 70
+
+subject 128089 ""
+  xyzwh 111 37.6 2000 500 519
+classcanvas 128217 class_ref 128217 // Utente
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 28.1 68 2000
+end
+usecasecanvas 128345 usecase_ref 128217 // UC 2.1
+  xyzwh 144.1 55.7 3005 155 85 label_xy 191 70
+end
+textcanvas 128473 "Avvio registrazione
+"
+  xyzwh 147 85.6 3010 147 22
+usecasecanvas 128601 usecase_ref 128345 // UC 2.2
+  xyzwh 402.9 45.2 3005 135 95 label_xy 446 58
+end
+textcanvas 128729 "Registrazione 
+info traccia"
+  xyzwh 418.3 74.6 3010 111 45
+textcanvas 129241 "<<include>>"
+  xyzwh 295.2 68.9 3011 96 22
+textcanvas 129753 "<<include>>"
+  xyzwh 296.3 238.9 2005 96 22
+usecasecanvas 129881 usecase_ref 128601 // UC 2.4
+  xyzwh 152.1 192.3 3005 139 103 label_xy 194 207
+end
+textcanvas 130009 "Stop 
+registrazione"
+  xyzwh 173.2 223.5 3010 100 45
+textcanvas 131033 "<<include>>"
+  xyzwh 285.2 152.2 3011 96 22
+usecasecanvas 131161 usecase_ref 128729 // UC 2.3
+  xyzwh 406.2 144.2 3015 153 97 label_xy 455 149
+end
+textcanvas 131289 "Creazione 
+oggetto audio"
+  xyzwh 432.3 169 3020 104 44
+usecasecanvas 131545 usecase_ref 128857 // UC 2.5
+  xyzwh 413.7 259.9 3005 169 121 label_xy 474 270
+end
+textcanvas 131673 "Salvataggio nel 
+dispositivo dell'
+oggetto audio"
+  xyzwh 442.5 288.3 3010 127 72
+usecasecanvas 131929 usecase_ref 128985 // UC 2.6
+  xyzwh 169.3 394.6 3005 149 105 label_xy 219 408
+end
+textcanvas 132057 "Avvio 
+riproduzione"
+  xyzwh 193 428 3010 95 45
+usecasecanvas 132185 usecase_ref 129113 // UC 2.7
+  xyzwh 428.1 416.6 3005 147 121 label_xy 476 431
+end
+textcanvas 132313 "Riproduzione 
+sincronizzata
+stesura tratto"
+  xyzwh 450.2 445.9 3010 106 68
+textcanvas 132569 "<<include>>"
+  xyzwh 334.1 422.2 3011 96 22
+textcanvas 133977 "Operazioni registrazione audio"
+  xyzwh 110.5 12.2 2005 231 22
+simplerelationcanvas 129113 simplerelation_ref 128345
+  from ref 128345 z 3006 to ref 128601
+end
+simplerelationcanvas 131417 simplerelation_ref 128985
+  from ref 128345 z 3016 to ref 131161
+end
+simplerelationcanvas 131801 simplerelation_ref 129113
+  from ref 129881 z 3006 to ref 131545
+end
+simplerelationcanvas 132441 simplerelation_ref 129241
+  from ref 131929 z 3006 to ref 132185
+end
+line 133081 ----
+  from ref 128217 z 3006 to ref 128345
+line 133209 ----
+  from ref 128217 z 3006 to ref 129881
+line 133849 ----
+  from ref 128217 z 3006 to ref 131929
+end
