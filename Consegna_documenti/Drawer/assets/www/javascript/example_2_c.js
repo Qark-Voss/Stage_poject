@@ -367,7 +367,6 @@ var CanvasDrawr = function(options) {
 			if(this.id == 'blue_b'){
 				
 				curCol = "#3366CC";
-				console.log(curCol);
 				precEraser = curCol;
 				
 				
@@ -511,7 +510,6 @@ var CanvasDrawr = function(options) {
 			
 			curRecord[0] = {id : idA, name: src, startRec: new Date(), stopRec: "null", page: curPage};
 
-			console.log(curPage);
 
 			audioRec.push(curRecord);
 
@@ -592,7 +590,6 @@ var CanvasDrawr = function(options) {
 
 				var startT = audioRec[i][0].startRec;
 				
-				console.log(startT);
 								
 				var stopT = audioRec[i][0].stopRec;
 
@@ -680,7 +677,6 @@ var CanvasDrawr = function(options) {
 	   		     // curW = Math.round(curW);
 	   			 curW = Math.floor(curW);
 	
-				console.log(curW);				
 			 	// curW = ((record[x+1][0].time.getHours()*60*60000 + record[x+1][0].time.getMinutes()*60000 + record[x+1][0].time.getSeconds()*1000 + record[x+1][0].time.getMilliseconds()) - (record[x][0].time.getHours()*60*60000 + record[x][0].time.getMinutes()*60000 + record[x][0].time.getSeconds()*1000 + record[x][0].time.getMilliseconds()));
 
 			}		
@@ -914,7 +910,6 @@ var CanvasDrawr = function(options) {
 			
 					for(i = 0; i < record.length; i++){
 															
-						console.log(record[i][0].id + " è uguale a " + idM);
 										
 						if((record[i][0].id == record[i+1][0].id) && (record[i][0].id != idM)){
 										
@@ -931,7 +926,6 @@ var CanvasDrawr = function(options) {
 				
 						if(record[i][0].id == idM){
 				
-						console.log("Eliminazione?");
 				
 						var numbers = record.length - i;
 				
@@ -1379,8 +1373,6 @@ var CanvasDrawr = function(options) {
 		
 		gotFileEntry: function(fileEntry) {
 
-			console.log("lettura file");
-
 			
 			if(fileEntry.name == "audioRec.txt"){
 					
@@ -1389,16 +1381,11 @@ var CanvasDrawr = function(options) {
 									var reader = new FileReader();
 							        reader.onloadend = function(evt) {
 								
-										console.log("lettura traccia audio");
-										
-							            console.log(evt.target.result);
 							
 										var temp = evt.target.result;										
 										
 										audioRec = JSON.parse(temp);
-																				
-										console.log(audrioRec[0][0]);
-										
+																														
 										// idA = audioRec[audioRec.length][0].id;
 
 							        };
@@ -1417,15 +1404,10 @@ var CanvasDrawr = function(options) {
 									var reader = new FileReader();
 							        reader.onloadend = function(evt) {
 
-										console.log("lettura storico tratti");
-
-							            // console.log(evt.target.result);
 										var temp = evt.target.result;
 										timerPage = JSON.parse(temp);
 										
 										idM = timerPage[timerPage.length - 1][0].idL ; 
-
-										console.log(idM);
 										
 							        };
 							        reader.readAsText(fileW);
@@ -1442,10 +1424,6 @@ var CanvasDrawr = function(options) {
 									var reader = new FileReader();
 							        reader.onloadend = function(evt) {
 								
-										console.log("lettura immagini");
-								
-							            // console.log("Read as text");
-							            console.log(evt.target.result);
 							
 										var temp = evt.target.result;
 										imageRecord = JSON.parse(temp);
@@ -1468,9 +1446,6 @@ var CanvasDrawr = function(options) {
 													
 									var reader = new FileReader();
 							        reader.onloadend = function(evt) {
-							            // console.log(evt.target.result);
-								
-										console.log("Lettura pagine");
 								
 										var temp = evt.target.result;
 							
@@ -1481,9 +1456,7 @@ var CanvasDrawr = function(options) {
 										record = pages[curPage];
 										
 										precRecord = pages[curPage];
-										
-										console.log(pages[0][0][0].id);
-										
+																				
 										navigatorTools.sucPage();
 										navigatorTools.precPage();
 										
@@ -1501,7 +1474,6 @@ var CanvasDrawr = function(options) {
 		
 		failR: function(event){
 			
-			console.log(event.target.error.code);
 
 		}
 		
