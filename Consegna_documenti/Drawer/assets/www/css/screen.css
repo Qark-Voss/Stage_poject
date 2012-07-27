@@ -1,0 +1,554 @@
+/*Reset*/
+
+div, body {margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
+
+/*Reset*/
+
+/*Typography*/
+
+html {font-size:100.01%;}
+body {font-size:75%;color:#222;background:#fff;font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;}
+h1,h2,h3,h4,h5,h6{font-weight:normal; color:#111;}
+h1 {font-size:3em;line-height:1;margin-bottom:0.5em;}
+h2 {font-size:2em;margin-bottom:0.75em;}
+h3 {font-size:1.5em;line-height:1;margin-bottom:1em;}
+h4 {font-size:1.2em;line-height:1.25;margin-bottom:1.25em;}
+h5 {font-size:1em;font-weight:bold;margin-bottom:1.5em;}
+h6 {font-size:1em;font-weight:bold;}
+
+#center_body h1{
+	
+	font-size: 3.5em;
+	padding-bottom:20px;
+	text-shadow: 3px 3px 0px black, 4px 4px 0px white;
+	font-family: "League-Gothic", Sans-serif;
+	text-transform: uppercase;
+	color: white;
+	margin: -64px 0 0 0 ;
+	background: url(../img/ribbon-R.png) ;
+	background-repeat: no-repeat;
+	padding: 11px 0 13px 10px;
+	
+	
+}
+
+/*Typhography*/
+
+
+/*Grid*/
+
+body {
+	
+	padding-left:3%;
+	padding-right:3%;
+	background: #f0f0f0;
+	
+	
+}
+
+
+.left_label{
+	
+	background: url(../img/ribbon-L.png);
+	width: 10px;
+	height: 74px;
+	position: relative;
+	right: 10px;
+	top: 0;
+}
+
+
+
+
+.container {
+	
+	width:100%; 
+	margin:0 auto;
+	
+}
+
+.container p {
+	
+	font-size: 0.8em;
+	
+}
+
+.span-sidebar, .span-full, .span-red, .span-colors, .span-tools, .span-spec {
+	
+	float:left;
+	margin-right:10px;	
+	
+}
+
+canvas {
+	
+
+	border-style: solid;
+	border-width: 1px;
+	border-color: lightgrey;
+	
+	background: #fff;
+	margin-top:10px;
+	box-shadow:5px 5px 10px #000;
+	-webkit-box-shadow:5px 5px 10px #000;
+	-moz-box-shadow: 5px 5px 10px #000;
+
+}
+
+.span-full {
+	
+	width: 100%;
+	margin-right: 0;
+
+	
+}
+
+.span-footer {
+	
+	width: 100%;
+	margin-right: 0;
+	margin-left:-2%;
+	padding-left:2%;
+	padding-bottom:5%;
+	
+}
+
+.span-canvas {
+	
+}
+
+.span-colors{
+	
+	width: 250px;
+	border-style: solid;
+	border-width: 1px;
+	
+}
+
+.span-tools{
+	
+	margin-bottom: 30px;
+	padding:5px;
+	margin-top:15px;
+	font-size: 1em;
+	
+	border-style: solid;
+	border-width: 1px;
+	border-color: lightgrey;
+	
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e5e5e5)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* IE10+ */
+	background: linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+	
+}
+
+.span-spec{
+
+	
+}
+
+.span-red{
+	
+	width: 20px;
+	height: 20px;
+	background: red;
+	
+	border-style: solid;
+	border-width: 1px;
+	
+	margin: 4px;
+}
+
+
+/*Grid*/
+
+
+/*Buttons*/
+
+#blue_b, #black_b, #brown_b, #white_b, #red_b, #orange_b, #yellow_b, #grey_b, #green_b, #pencil, #eraser, #one, #two, #three, #four, #five, #six, #small, #medium, #big {
+	
+	width: 30px;
+	height: 30px;
+	padding-top:4px;
+	
+}
+
+
+#clear_canv, #save_canv, #load_canv, #load, #c_s, #s_s, #s_t, #unDo_button, #reDo_button {
+	
+	height: 40px;
+	width: 40px;
+	margin-bottom:0px;
+}
+
+
+#new_F, #load_I, #save_f, #load_F, #unDo, #reDo{
+padding:0;
+margin:0;
+}
+
+#unDo ul{
+padding:0;
+margin:0;
+width:50px;
+
+}
+#unDo li{
+position: relative;
+list-style: none;
+margin: 0;
+padding:0;
+height: 40px;
+}
+
+#reDo ul{
+padding:0;
+margin:0;
+width:50px;
+
+}
+#reDo li{
+position: relative;
+list-style: none;
+margin: 0;
+padding:0;
+height: 40px;
+}
+
+#new_F ul{
+padding:0;
+margin:0;
+width:50px;
+
+}
+#new_F li{
+position: relative;
+list-style: none;
+margin: 0;
+padding:0;
+height: 40px;
+}
+
+#load_I ul{
+padding:0;
+margin:0;
+width:50px;
+
+}
+
+#load_I li{
+position: relative;
+list-style: none;
+margin: 0;
+padding:0;
+height: 40px;
+}
+
+
+#save_F ul{
+padding:0;
+margin:0;
+width:50px;
+
+}
+#save_F li{
+position: relative;
+list-style: none;
+margin: 0;
+padding:0;
+height: 40px;
+}
+
+#load_F ul{
+padding:0;
+margin:0;
+width:50px;
+
+}
+#load_F li{
+position: relative;
+list-style: none;
+margin: 0;
+padding:0;
+height: 40px;
+}
+
+/* COLOR MENU */
+#color_menu{
+padding:0;
+margin:0;
+}
+#color_menu ul{
+padding:0;
+margin:0;
+width:50px;
+
+}
+#color_menu li{
+position: relative;
+list-style: none;
+margin: 0;
+padding:0;
+}
+
+#color_menu ul ul{
+position: absolute;
+top: -120px;
+visibility: hidden;
+background-color:white;
+}
+
+#color_menu li{
+width:50px;
+height: 40px;
+display: block;
+text-decoration:none;
+text-align: center;
+line-height: 30px;
+color: white;
+}
+
+
+#color_menu ul li ul{
+	
+	border-style: solid;
+	border-width: 1px;
+	border-color: lightgray;
+	float:left;
+	width:50px;
+	
+}
+
+
+#color_menu ul li ul li{
+
+width:50px;
+
+}
+
+#col1{
+	
+	left:-50px;
+	
+}
+
+#col3{
+	
+	left:+50px;
+	
+}
+
+#color_menu ul li ul li:hover{
+background-color: lightgray;
+
+}
+
+#color_menu ul li:hover ul{
+visibility:visible;
+}
+
+/* TOOSL MENU */
+#tools_menu{
+padding:0;
+margin:0;
+}
+#tools_menu ul{
+padding:0;
+margin:0;
+width:50px;
+
+}
+#tools_menu li{
+position: relative;
+list-style: none;
+margin: 0;
+padding:0;
+}
+
+#tools_menu ul ul{
+position: absolute;
+top: -40px;
+visibility: hidden;
+background-color:white;
+}
+
+#tools_menu li{
+width:50px;
+height: 40px;
+display: block;
+text-decoration:none;
+text-align: center;
+line-height: 30px;
+color: white;
+}
+
+
+#tools_menu ul li ul{
+	
+	border-style: solid;
+	border-width: 1px;
+	border-color: lightgray;
+	float:left;
+	width:50px;
+	
+}
+
+
+#tools_menu ul li ul li{
+
+width:50px;
+
+}
+
+#cTools1{
+	
+	left:-25px;
+	
+}
+
+#cTools2{
+	
+	left:25px;
+	
+}
+
+#tools_menu ul li ul li:hover{
+background-color: lightgray;
+
+}
+
+#tools_menu ul li:hover ul{
+visibility:visible;
+}
+
+/* TOOSL MENU */
+#sizes_menu{
+padding:0;
+margin:0;
+}
+#sizes_menu ul{
+padding:0;
+margin:0;
+width:50px;
+
+}
+#sizes_menu li{
+position: relative;
+list-style: none;
+margin: 0;
+padding:0;
+}
+
+#sizes_menu ul ul{
+position: absolute;
+top: -80px;
+visibility: hidden;
+background-color:white;
+}
+
+#sizes_menu li{
+width:50px;
+height: 40px;
+display: block;
+text-decoration:none;
+text-align: center;
+line-height: 30px;
+color: white;
+}
+
+
+#sizes_menu ul li ul{
+	
+	border-style: solid;
+	border-width: 1px;
+	border-color: lightgray;
+	float:left;
+	width:50px;
+	
+}
+
+
+#sizes_menu ul li ul li{
+
+width:50px;
+
+}
+
+#cSizes1{
+	
+	left:-50px;
+	
+}
+
+#cSizes3{
+	
+	left:50px;
+	
+}
+
+#sizes_menu ul li ul li:hover{
+background-color: lightgray;
+
+}
+
+#sizes_menu ul li:hover ul{
+visibility:visible;
+}
+
+
+#load{
+	
+
+
+
+	
+}
+
+#load_I{
+	
+	position: relative;
+	
+}
+
+#fakebutton{
+	
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 1;
+}
+
+#media {
+	
+	width: 100px;
+	
+}
+
+/*Navigation Buttons*/
+
+
+#page_navigator{
+	
+	margin-bottom: 30px;
+	padding:5px;
+	margin-top:15px;
+	margin-left: 15px;
+	font-size: 1em;	
+}
+
+#recording_bar{
+	
+	margin-bottom: 30px;
+	padding:5px;
+	margin-top:15px;
+	margin-left: 15px;
+	font-size: 1em;
+	
+}
+
+/*Buttons*/

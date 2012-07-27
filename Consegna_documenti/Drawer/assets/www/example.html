@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		
+		<title>Drawing app - Pre Alpha</title>
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<script type="text/javascript" src="javascript/jquery-1.7.2.min.js"></script> 				
+								
+		<script type="text/javascript" src="javascript/example_2_c.js"></script>	
+		
+		<script type="text/javascript" charset="utf-8" src="cordova-1.8.1.js"></script>
+		
+		<script type="text/javascript" src="javascript/json2.js"></script>	
+				
+		<script type="text/javascript" charset="utf-8"></script>
+		
+		
+	    
+			
+		
+		<link rel="stylesheet" type="text/css" href="css/screen.css">
+		
+		
+		
+	</head>
+	
+	<body id="starships">
+
+		<div class="container">	
+			
+			
+			<div id="center_body" class="span-full">
+				
+				<div class="left_label"></div>
+				
+				<h1>Drawing App</h1>
+				
+				<div id="canvasDiv" class="span-canvas">
+				</div> 
+				
+			</div>
+			
+			<div id="bottom_bar" class="span-full">
+			
+	
+			
+				<div id="tool_bar" class="span-tools">
+				
+				
+					
+					<div class="span-spec">
+					
+					<div id="new_F">
+					
+					<ul>
+						<li>
+					<input type="image" src="css/icon_set/new_img.png" id="clear_canv"></input>
+						</li>
+					</ul>
+					New file
+					</div>
+					
+					
+					</div >
+					
+					
+					<div class="span-spec">
+					
+					<div id="save_F">
+					
+					<ul>
+						<li>
+					<input type="image" src="css/icon_set/save_img.png" id="save_canv"></input>
+						</li>
+					</ul>
+					Save file
+					</div>
+
+					</div >
+					
+					<div class="span-spec">
+					
+					<div id="load_F">					
+					
+					<ul>
+						<li>
+					<input type="image" src="css/icon_set/open_file.png" id="load_canv"></input>
+						</li>
+					</ul>
+					
+					Load file
+					</div>
+
+					</div >
+					
+
+					<div class="span-spec">
+						
+						
+						<div id="tools_menu">
+							
+							<ul>
+							
+								<li><a><img id="s_t"src="css/icon_set/tool_selector.png"></img></a>
+									
+									<ul id="cTools1">
+										<li><input type="image" src="css/icon_set/pencil.png" id="pencil"> </input></li>
+									</ul>
+									<ul id="cTools2">
+										<li><input type="image" src="css/icon_set/eraser.png" id="eraser"> </input></li>
+									</ul>
+					
+								</li>
+							</ul>
+							Select tool
+						</div>
+						
+					</div>
+
+					
+					<div class="span-spec">
+						<div id="load_I">
+							<ul><li>
+							<input type="image" src="css/icon_set/load_img.png" id="load"></input>								
+	
+								
+							</li></ul>
+							Load image
+						</div>
+					</div>
+					
+					
+					<div class="span-spec">
+						
+						
+						<div id="sizes_menu">
+							
+							<ul>
+							
+								<li><a><img id="s_s" src="css/icon_set/canvas_size.png"></img></a>
+									
+									<ul id="cSizes1">
+										<li><input type="image" src="css/sizes/one.png" id="one"> </input></li>
+										<li><input type="image" src="css/sizes/two.png" id="two"> </input></li>
+									</ul>
+									<ul id="cSizes2">
+										<li><input type="image" src="css/sizes/three.png" id="three"> </input></li>
+										<li><input type="image" src="css/sizes/four.png" id="four"> </input></li>
+									</ul>
+									<ul id="cSizes3">
+										<li><input type="image" src="css/sizes/five.png" id="five"> </input></li>
+										<li><input type="image" src="css/sizes/six.png" id="six"> </input></li>
+									</ul>
+					
+								</li>
+							</ul>
+							Select size
+						</div>
+						
+						
+					
+					</div>
+					
+					<div class="span-spec" >
+						
+						
+						
+						
+						<div id="color_menu">
+							
+							<ul>
+							
+								<li><a><img id="c_s" src="css/icon_set/color_selector.png"></img></a>
+									
+									<ul id="col1">
+									<li><input type="image" src="img/colors/white.png" id="white_b"> </input></li>
+									<li><input type="image" src="img/colors/grey.png" id="grey_b"> </input></li>
+									<li><input type="image" src="img/colors/black.png" id="black_b"> </input></li>
+									</ul>
+									<ul id="col2">
+										<li><input type="image" src="img/colors/orange.png" id="orange_b"> </input></li>
+										
+									<li><input type="image" src="img/colors/red.png" id="red_b"> </input></li>
+									<li><input type="image" src="img/colors/brown.png" id="brown_b"> </input></li>
+								
+									</ul>
+									<ul id="col3">
+									<li><input type="image" src="img/colors/yellow.png" id="yellow_b"> </input></li>
+									<li><input type="image" src="img/colors/green.png" id="green_b"> </input></li>
+									<li><input type="image" src="img/colors/blue.png" id="blue_b"> </input></li>
+									</ul>
+											
+								</li>
+							</ul>
+							Choose color
+						</div>
+						
+						
+					
+					</div>
+					
+					
+					
+					<div class="span-spec">
+						<div id="unDo">
+							<ul><li>
+						
+							<input type="image" src="css/icon_set/undo.png" id="unDo_button"></input>
+						</ul></li>
+							Undo
+						</div>
+					</div>
+					
+					<div class="span-spec">
+						<div id="reDo">
+							<ul><li>
+							
+							<input type="image" src="css/icon_set/redo.png"id="reDo_button"></input>
+							
+							</ul></li>
+							
+							Redo
+						</div>
+					</div>
+					
+				
+				</div>
+				
+				<div class="span-spec" id ="recording_bar">
+					<div class="span-spec">
+
+					<div id="new_A">
+
+							<input type="image" src="css/icon_set/rec_d.png" id="record_button"></input>
+
+					</div>
+
+					</div>
+					
+					<div class="span-spec">
+
+					<div id="stop_A">
+
+							<input type="image" src="css/icon_set/stop.png" id="stopRec_button"></input>
+
+					</div>
+
+					</div>
+
+					<!-- <div class="span-spec">
+
+										<div id="play_A">
+
+										<input type="button" value="play" id="play_button"></input>
+
+										</div>
+
+										</div> -->
+					
+					<div class="span-spec">
+
+					<div id="play_D">
+						
+							<input type="image" src="css/icon_set/play.png" id="play_draw"></input>
+
+					</div>
+
+					</div>
+					
+					<div class="span-spec">
+
+					<div id="media_list">
+
+					<select id="media">
+
+						
+						
+					</select>
+
+					</div>
+
+					</div>
+				
+				</div>
+				<div class="span-spec" id = "page_navigator">
+				
+					<div class="span-spec">
+						<div id="precedent">
+
+
+							<input type="image" src="css/icon_set/arrow_left.png" id="prec_button"></input>
+		
+						</div>
+						
+						<p>
+							Prec Page
+						</p>
+					</div>
+
+
+					<div class="span-spec">
+						<div id="sucessive">
+
+							<input type="image" src="css/icon_set/arrow_right.png" id="suc_button"></input>
+
+						</div>
+						
+						
+						<p>
+							Suc Page
+						</p>
+					</div>
+					
+				</div>
+				
+			</div>
+			
+			<!-- <div id="footer" class="span-footer">
+							
+								<img id = "gallina" src=""></img>
+							
+								Studente: Quadrio Giacomo <br />
+								Matricola: 598571<br />
+						</div> -->
+		
+		</div>
+		
+	</body>
+	
+</html>
